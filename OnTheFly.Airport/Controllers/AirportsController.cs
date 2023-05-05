@@ -7,5 +7,6 @@ namespace OnTheFly.Airport.Controllers
     [ApiController]
     public class AirportsController : ControllerBase
     {
+
     }
 }
