@@ -5,7 +5,8 @@ namespace OnTheFly.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AirportsController : ControllerBase
+    public class AirportController : ControllerBase
     {
+
     }
 }

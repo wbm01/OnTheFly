@@ -7,5 +7,6 @@ namespace OnTheFly.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
+
     }
 }
