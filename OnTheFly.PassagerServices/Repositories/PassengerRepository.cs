@@ -29,7 +29,6 @@ namespace OnTheFly.PassengerServices.Repositories
 
         public Passenger GetPassengerByCPF(string CPF) => _pasengerRepository.Find(p => p.CPF == CPF).FirstOrDefault();
 
-
         public Passenger PostPassenger(Passenger passenger)
         {
             _pasengerRepository.InsertOne(passenger);
