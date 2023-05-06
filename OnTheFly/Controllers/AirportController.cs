@@ -9,11 +9,11 @@ namespace OnTheFly.Controllers
     [ApiController]
     public class AirportController : ControllerBase
     {
-        private readonly AirportsService _airportService;
+        private readonly AirportService _airportService;
 
         public AirportController()
         {
-            _airportService = new AirportsService();
+            _airportService = new AirportService();
         }
 
 

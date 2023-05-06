@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Services
 {
-    public class AirportsService
+    public class AirportService
     {
         static readonly HttpClient customerAirport = new HttpClient();
 
@@ -17,7 +17,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage response = await AirportsService.customerAirport.GetAsync("https://localhost:7206/api/Airport");
+                HttpResponseMessage response = await AirportService.customerAirport.GetAsync("https://localhost:7206/api/Airport");
                 response.EnsureSuccessStatusCode();
                 string airport = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<List<Airport>>(airport);
@@ -32,7 +32,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage response = await AirportsService.customerAirport.GetAsync("https://localhost:7206/api/Airport/" + IATA);
+                HttpResponseMessage response = await AirportService.customerAirport.GetAsync("https://localhost:7206/api/Airport/" + IATA);
                 response.EnsureSuccessStatusCode();
                 string airport = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Airport>(airport);
