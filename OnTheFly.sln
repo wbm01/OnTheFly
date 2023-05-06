@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OntheFly.Company", "OntheFly.Company\OntheFly.Company.csproj", "{F070FDB4-DB3D-41FD-9D87-0B14834ED891}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.CompanyServices", "OntheFly.Company\OnTheFly.CompanyServices.csproj", "{F070FDB4-DB3D-41FD-9D87-0B14834ED891}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
