@@ -2,7 +2,7 @@
 {
     public class MongoDBConfig:IMongoDBConfig
     {
-        public string AirporttCollectionName { get; set; }
+        public string AirportCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }

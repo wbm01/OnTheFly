@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using OnTheFly.AirportServices.Config;
 using OnTheFly.AirportServices.Services;
 
 namespace OnTheFly.AirportServices.Controllers
@@ -10,10 +11,13 @@ namespace OnTheFly.AirportServices.Controllers
     public class AirportController : ControllerBase
     {
         private readonly AirportService _airportService;
+        private readonly IMongoDBConfig _mongoDbConfig;
 
-        public AirportController()
+        public AirportController(IMongoDBConfig config)
         {
-            _airportService = new();
+            _mongoDbConfig = config;
+            _airportService = new(config);
+            
         }
 
         [HttpGet(Name = "Get Airports")]

@@ -2,7 +2,7 @@
 {
     public interface IMongoDBConfig
     {
-        string AirporttCollectionName { get; set; }
+        string AirportCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }

@@ -1,21 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
 using MongoDB.Driver;
+using OnTheFly.AirportServices.Config;
 
 namespace OnTheFly.AirportServices.Repositories
 {
     public class AirportRepository:IAirportRepository
     {
         private readonly IMongoCollection<Airport> _airportRepository;
-        private readonly string connectionString = "mongodb://localhost:27017";
-        private readonly string databaseName = "OnTheFlyAirport";
-        private readonly string airportCollectionName = "Airport";
+        //private readonly string connectionString = "mongodb://localhost:27017";
+        //private readonly string databaseName = "OnTheFlyAirport";
+        //private readonly string airportCollectionName = "Airport";
 
-        public AirportRepository()
+        /*public AirportRepository()
         {
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase(databaseName);
             _airportRepository = database.GetCollection<Airport>(airportCollectionName);
+        }*/
+
+        public AirportRepository(IMongoDBConfig config)
+        {
+            var client = new MongoClient(config.ConnectionString);
+            var database = client.GetDatabase(config.DatabaseName);
+            _airportRepository = database.GetCollection<Airport>(config.AirportCollectionName);
         }
 
         public List<Airport> GetAirports() => _airportRepository.Find(a => true).ToList();

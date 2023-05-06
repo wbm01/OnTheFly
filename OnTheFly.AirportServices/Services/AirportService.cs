@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
+using OnTheFly.AirportServices.Config;
 using OnTheFly.AirportServices.Repositories;
 
 namespace OnTheFly.AirportServices.Services
@@ -8,9 +9,9 @@ namespace OnTheFly.AirportServices.Services
     {
         private readonly IAirportRepository _airportRepository;
 
-        public AirportService()
+        public AirportService(IMongoDBConfig config)
         {
-            _airportRepository = new AirportRepository();
+            _airportRepository = new AirportRepository(config);
         }
 
         public List<Airport> GetAirports()
