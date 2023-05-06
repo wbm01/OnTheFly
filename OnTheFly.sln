@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTheFly", "OnTheFly\OnTheFly.csproj", "{52D3CE84-EA3C-4FDD-8682-356850341D9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly", "OnTheFly\OnTheFly.csproj", "{52D3CE84-EA3C-4FDD-8682-356850341D9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{2808A3C0-D423-430E-A847-CBECE784CE7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{2808A3C0-D423-430E-A847-CBECE784CE7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTheFly.Airport", "OnTheFly.Airport\OnTheFly.Airport.csproj", "{34F15940-BFF0-4702-9F9C-AD38D7FDE65E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTheFly.AirportServices", "OnTheFly.AirportServices\OnTheFly.AirportServices.csproj", "{3637E5BC-8BD8-4528-AE58-E3F32C92559D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34F15940-BFF0-4702-9F9C-AD38D7FDE65E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34F15940-BFF0-4702-9F9C-AD38D7FDE65E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34F15940-BFF0-4702-9F9C-AD38D7FDE65E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34F15940-BFF0-4702-9F9C-AD38D7FDE65E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
