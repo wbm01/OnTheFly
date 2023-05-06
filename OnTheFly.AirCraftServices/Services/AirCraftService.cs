@@ -27,10 +27,9 @@ namespace OnTheFly.AirCraftServices.Services
         {
             AirCraft airCraft1 = new()
             {
-                RAB = "BR-ASD",
-                Capacity = 30,
-                DtRegistry = DateTime.Now,
-                DtLastFlight = DateTime.Now,
+                RAB = airCraft.RAB,
+                Capacity = airCraft.Capacity,
+                DtRegistry = DateTime.Now,                
                 Company = new Company()
                 {
                     CNPJ = "1234567891234567891",
