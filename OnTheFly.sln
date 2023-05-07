@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.CompanyServices", "OntheFly.Company\OnTheFly.CompanyServices.csproj", "{F070FDB4-DB3D-41FD-9D87-0B14834ED891}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTheFly.SalesServices", "OnTheFly.SalesServices\OnTheFly.SalesServices.csproj", "{2FDF5C0C-1591-44D4-8638-022111CB8208}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.SalesServices", "OnTheFly.SalesServices\OnTheFly.SalesServices.csproj", "{2FDF5C0C-1591-44D4-8638-022111CB8208}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
