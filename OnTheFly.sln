@@ -10,17 +10,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.AirportServices", "OnTheFly.AirportServices\OnTheFly.AirportServices.csproj", "{3637E5BC-8BD8-4528-AE58-E3F32C92559D}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.AirCraftServices", "OnTheFly.AirCraftServices\OnTheFly.AirCraftServices.csproj", "{C987EEEF-1D1D-470B-9D06-A89C9E0C7A78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTheFly.FlightsService", "OnTheFly.FlightsService\OnTheFly.FlightsService.csproj", "{39D4A316-299E-450B-A460-D5AD3C683688}"
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}"
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.AirportServices", "OnTheFly.AirportServices\OnTheFly.AirportServices.csproj", "{3637E5BC-8BD8-4528-AE58-E3F32C92559D}"
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.FlightsService", "OnTheFly.FlightsService\OnTheFly.FlightsService.csproj", "{39D4A316-299E-450B-A460-D5AD3C683688}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.AirportServices", "OnTheFly.AirportServices\OnTheFly.AirportServices.csproj", "{3637E5BC-8BD8-4528-AE58-E3F32C92559D}"
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.PassengerServices", "OnTheFly.PassagerServices\OnTheFly.PassengerServices.csproj", "{57995209-4459-450F-B6AE-FCC35ECE2C92}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.PassengerServices", "OnTheFly.PassagerServices\OnTheFly.PassengerServices.csproj", "{57995209-4459-450F-B6AE-FCC35ECE2C92}"
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.PassengerServices", "OnTheFly.PassagerServices\OnTheFly.PassengerServices.csproj", "{57995209-4459-450F-B6AE-FCC35ECE2C92}"
 EndProject
 Global
@@ -41,6 +35,10 @@ Global
 		{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C987EEEF-1D1D-470B-9D06-A89C9E0C7A78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C987EEEF-1D1D-470B-9D06-A89C9E0C7A78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C987EEEF-1D1D-470B-9D06-A89C9E0C7A78}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,10 +47,6 @@ Global
 		{39D4A316-299E-450B-A460-D5AD3C683688}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39D4A316-299E-450B-A460-D5AD3C683688}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39D4A316-299E-450B-A460-D5AD3C683688}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{57995209-4459-450F-B6AE-FCC35ECE2C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57995209-4459-450F-B6AE-FCC35ECE2C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57995209-4459-450F-B6AE-FCC35ECE2C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
