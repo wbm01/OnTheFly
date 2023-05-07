@@ -13,5 +13,6 @@ namespace Models
         public DateTime DtBirth { get; set; }
         public DateTime DtRegister { get; set; }
         public bool? Status { get; set; }
+        public Address Address { get; set; }
     }
 }
