@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Models;
+using Models.DTO;
 using Newtonsoft.Json;
 
 namespace Services
@@ -13,14 +14,15 @@ namespace Services
     {
         static readonly HttpClient customerAirport = new HttpClient();
 
-        public async Task<List<Airport>> GetAirports()
+        public async Task<List<AirportDTO>> GetAirports()
         {
             try
             {
                 HttpResponseMessage response = await AirportService.customerAirport.GetAsync("https://localhost:7206/api/Airport");
                 response.EnsureSuccessStatusCode();
                 string airport = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<List<Airport>>(airport);
+                var end = JsonConvert.DeserializeObject<List<AirportDTO>>(airport);
+                return end;
             }
             catch (HttpRequestException e)
             {
@@ -28,14 +30,14 @@ namespace Services
             }
         }
 
-        public async Task<Airport> GetAirportByIATA(string IATA)
+        public async Task<AirportDTO> GetAirportByIATA(string IATA)
         {
             try
             {
                 HttpResponseMessage response = await AirportService.customerAirport.GetAsync("https://localhost:7206/api/Airport/" + IATA);
                 response.EnsureSuccessStatusCode();
                 string airport = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<Airport>(airport);
+                return JsonConvert.DeserializeObject<AirportDTO>(airport);
             }
             catch (HttpRequestException e)
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using OnTheFly.AirportServices.Config;
 using OnTheFly.AirportServices.Repositories;
 
@@ -19,21 +20,13 @@ namespace OnTheFly.AirportServices.Services
             return _airportRepository.GetAirports();
         }
 
-        public Airport GetAirportByIATA(string IATA)
+       public Airport GetAirportByIATA(string IATA)
         {
             return _airportRepository.GetAirportByIATA(IATA);
         }
 
         public Airport CreateAirport(Airport airport)
         {
-            /*Airport airport = new()
-            {
-                IATA = "AQA",
-                State = "SP",
-                City = "Araraquara",
-                Country = "Brasil"
-            };*/
-
             return _airportRepository.CreateAirport(airport);
         }
 

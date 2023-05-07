@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using MongoDB.Driver;
 using OnTheFly.AirportServices.Config;
 
@@ -26,13 +27,13 @@ namespace OnTheFly.AirportServices.Repositories
             _airportRepository = database.GetCollection<Airport>(config.AirportCollectionName);
         }
 
-        public List<Airport> GetAirports() => _airportRepository.Find(a => true).ToList();
+        public List<Airport> GetAirports() => _airportRepository.Find(airport => true).ToList();
 
         public Airport GetAirportByIATA(string IATA)
         {
             string IATAUp = IATA.ToUpper();
 
-            return _airportRepository.Find(a => a.IATA == IATAUp).FirstOrDefault();
+            return _airportRepository.Find<Airport>(airport => airport.iata == IATAUp).FirstOrDefault();
         }
 
         public Airport CreateAirport(Airport airport)
@@ -46,7 +47,7 @@ namespace OnTheFly.AirportServices.Repositories
         {
             string IATAUp = IATA.ToUpper();
 
-            _airportRepository.ReplaceOne(a => a.IATA == IATAUp, airport);
+            _airportRepository.ReplaceOne(a => a.iata == IATAUp, airport);
 
             return airport;
         }
@@ -55,7 +56,7 @@ namespace OnTheFly.AirportServices.Repositories
         {
             string IATAUp = IATA.ToUpper();
 
-            return _airportRepository.FindOneAndDelete(a => a.IATA == IATAUp);
+            return _airportRepository.FindOneAndDelete(a => a.iata == IATAUp);
         }
     }
 }

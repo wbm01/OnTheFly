@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using Services;
 
 namespace OnTheFly.Controllers
@@ -18,13 +19,13 @@ namespace OnTheFly.Controllers
 
 
         [HttpGet(Name = "Get Airports")]
-        public async Task<List<Airport>> GetAirports()
+        public async Task<List<AirportDTO>> GetAirports()
         {
             return await _airportService.GetAirports();
         }
 
         [HttpGet("{IATA}", Name = "Get Airport By IATA")]
-        public async Task<Airport> GetAirportByIATA(string IATA)
+        public async Task<AirportDTO> GetAirportByIATA(string IATA)
         {
             return await _airportService.GetAirportByIATA(IATA);
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using OnTheFly.AirportServices.Config;
 using OnTheFly.AirportServices.Services;
 
@@ -20,16 +21,21 @@ namespace OnTheFly.AirportServices.Controllers
             
         }
 
-        [HttpGet(Name = "Get Airports")]
+        [HttpGet(Name = "GetAll")]
         public List<Airport> GetAirports()
         {
             return _airportService.GetAirports();
         }
 
-        [HttpGet("{IATA}", Name = "Get Airport By IATA")]
-        public Airport GetAirportByIATA(string IATA)
+        [HttpGet("{iata}", Name = "GetAirportIata")]
+        public ActionResult<Airport> GetAirpotyByIATA(string iata)
         {
-            return _airportService.GetAirportByIATA(IATA);
+            var airport = _airportService.GetAirportByIATA(iata);
+
+            if (airport == null)
+                return NotFound();
+
+            return airport;
         }
 
         [HttpPost(Name = "Create Airport")]
