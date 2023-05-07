@@ -8,15 +8,12 @@ namespace OnTheFly.AirCraftServices.Repositories
     public class AirCraftRepository : IAirCraftRepository
     {
         private readonly IMongoCollection<AirCraft> _aircraftRepository;
-        private readonly string connectionString = "mongodb://localhost:27017";
-        private readonly string databaseName = "OnTheFlyAirCraft";
-        private readonly string airCraftCollectionName = "AirCraft";
 
-        public AirCraftRepository()
+        public AirCraftRepository(IMongoDBConfig config)
         {
-            var client = new MongoClient(connectionString);
-            var database = client.GetDatabase(databaseName);
-            _aircraftRepository = database.GetCollection<AirCraft>(airCraftCollectionName);
+            var client = new MongoClient(config.ConnectionString);
+            var database = client.GetDatabase(config.DatabaseName);
+            _aircraftRepository = database.GetCollection<AirCraft>(config.AirCraftCollectionName);
         }
 
         public List<AirCraft> GetAirCrafts() => _aircraftRepository.Find(a => true).ToList();

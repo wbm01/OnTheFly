@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
+using OnTheFly.AirCraftServices.config;
 using OnTheFly.AirCraftServices.Repositories;
 
 namespace OnTheFly.AirCraftServices.Services
@@ -8,9 +9,9 @@ namespace OnTheFly.AirCraftServices.Services
     {
         private readonly IAirCraftRepository _airCraftRepository;
 
-        public AirCraftService()
+        public AirCraftService(AirCraftRepository repository)
         {
-            _airCraftRepository = new AirCraftRepository();
+            _airCraftRepository = repository;
         }
 
         public List<AirCraft> GetAirCrafts()

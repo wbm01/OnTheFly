@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using OnTheFly.AirCraftServices.config;
 using OnTheFly.AirCraftServices.Services;
 
 namespace OnTheFly.AirCraftServices.Controllers
@@ -11,9 +12,9 @@ namespace OnTheFly.AirCraftServices.Controllers
     {
         private readonly AirCraftService _airCraftService;
 
-        public AirCraftController()
+        public AirCraftController(AirCraftService service)
         {
-            _airCraftService = new();
+            _airCraftService = service;
         }
 
         [HttpGet(Name = "Get AirCrafts")]

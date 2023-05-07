@@ -14,14 +14,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<MongoDBConfig>(builder.Configuration.GetSection("MongoDBConfig"));
+
 builder.Services.AddSingleton<IMongoDBConfig>(s => s.GetRequiredService<IOptions<MongoDBConfig>>().Value);
-/*
 builder.Services.AddSingleton<AirCraftRepository>();
 builder.Services.AddSingleton<AirCraftService>();
-builder.Services.AddSingleton<AirCraftController>();
-*/
-
-
 
 var app = builder.Build();
 
