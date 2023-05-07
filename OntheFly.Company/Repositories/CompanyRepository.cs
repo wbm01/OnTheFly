@@ -22,9 +22,9 @@ namespace OnTheFly.CompanyServices.Repositories
 
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companyRepository.FindOneAndDelete(a => a.CNPJ == CNPJ);
 
-        public List<Company> GetCompany() => _companyRepository.Find(a => true).ToList();
+        public List<Company> GetCompany() => _companyRepository.Find(c => true).ToList();
 
-        public Company GetCompanyByCNPJ(string CNPJ) => _companyRepository.Find(a => a.CNPJ == CNPJ).FirstOrDefault();
+        public Company GetCompanyByCNPJ(string CNPJ) => _companyRepository.Find(c => c.CNPJ == CNPJ).FirstOrDefault();
 
         public Company PostCompany(Company company)
         {
