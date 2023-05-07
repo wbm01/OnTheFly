@@ -9,10 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTheFly.AirportServices", "OnTheFly.AirportServices\OnTheFly.AirportServices.csproj", "{3637E5BC-8BD8-4528-AE58-E3F32C92559D}"
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.AirportServices", "OnTheFly.AirportServices\OnTheFly.AirportServices.csproj", "{3637E5BC-8BD8-4528-AE58-E3F32C92559D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnTheFly.PassengerServices", "OnTheFly.PassagerServices\OnTheFly.PassengerServices.csproj", "{57995209-4459-450F-B6AE-FCC35ECE2C92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.PassengerServices", "OnTheFly.PassagerServices\OnTheFly.PassengerServices.csproj", "{57995209-4459-450F-B6AE-FCC35ECE2C92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
