@@ -8,10 +8,19 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{2808A3C0-D423-430E-A847-CBECE784CE7A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{E5B5A5B1-97DF-40E2-86DF-C8A35701ED95}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.CompanyServices", "OntheFly.Company\OnTheFly.CompanyServices.csproj", "{F070FDB4-DB3D-41FD-9D87-0B14834ED891}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.SalesServices", "OnTheFly.SalesServices\OnTheFly.SalesServices.csproj", "{2FDF5C0C-1591-44D4-8638-022111CB8208}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.AirportServices", "OnTheFly.AirportServices\OnTheFly.AirportServices.csproj", "{3637E5BC-8BD8-4528-AE58-E3F32C92559D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.AirCraftServices", "OnTheFly.AirCraftServices\OnTheFly.AirCraftServices.csproj", "{C987EEEF-1D1D-470B-9D06-A89C9E0C7A78}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.FlightsService", "OnTheFly.FlightsService\OnTheFly.FlightsService.csproj", "{39D4A316-299E-450B-A460-D5AD3C683688}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnTheFly.PassengerServices", "OnTheFly.PassagerServices\OnTheFly.PassengerServices.csproj", "{57995209-4459-450F-B6AE-FCC35ECE2C92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +48,22 @@ Global
 		{2FDF5C0C-1591-44D4-8638-022111CB8208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FDF5C0C-1591-44D4-8638-022111CB8208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FDF5C0C-1591-44D4-8638-022111CB8208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3637E5BC-8BD8-4528-AE58-E3F32C92559D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C987EEEF-1D1D-470B-9D06-A89C9E0C7A78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C987EEEF-1D1D-470B-9D06-A89C9E0C7A78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C987EEEF-1D1D-470B-9D06-A89C9E0C7A78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C987EEEF-1D1D-470B-9D06-A89C9E0C7A78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39D4A316-299E-450B-A460-D5AD3C683688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39D4A316-299E-450B-A460-D5AD3C683688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39D4A316-299E-450B-A460-D5AD3C683688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39D4A316-299E-450B-A460-D5AD3C683688}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57995209-4459-450F-B6AE-FCC35ECE2C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57995209-4459-450F-B6AE-FCC35ECE2C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57995209-4459-450F-B6AE-FCC35ECE2C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57995209-4459-450F-B6AE-FCC35ECE2C92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
