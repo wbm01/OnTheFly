@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using MongoDB.Bson.Serialization;
 using Newtonsoft.Json;
 using OnTheFly.FlightsService.DTOs;
 using OnTheFly.FlightsService.Repositories;
@@ -11,14 +14,16 @@ namespace OnTheFly.FlightsService.Services
     public class FlightService
     {
         private readonly IFlightsRepository _flightsRepository;
-        private readonly HttpClient _airCraftClient;
-        private readonly string _linkHost;
+        private readonly HttpClient _flightstClient;
+        private readonly string _airCraftHost;
+        private readonly string _airportHost;
 
         public FlightService(FlightsRepository repository)
         {
             _flightsRepository = repository;
-            _linkHost = "https://localhost:7250/api/AirCraft/";
-            _airCraftClient = new();
+            _airCraftHost = "https://localhost:7250/api/AirCraft/";
+            _airportHost = "https://localhost:7206/api/Airport/";
+            _flightstClient = new();
         }
 
         public List<Flight> GetFlights()
@@ -26,7 +31,7 @@ namespace OnTheFly.FlightsService.Services
             List<Flight> response = _flightsRepository.GetFlights();
             List<Flight> flights = new();
 
-            foreach(var flight in response)
+            foreach (var flight in response)
             {
                 string date = $"{flight.Departure.Day}/{flight.Departure.Month}/{flight.Departure.Year} {flight.Departure.Hour - 3}:{flight.Departure.Minute}:{flight.Departure.Second}";
                 DateTime dateTime = DateTime.Parse(date);
@@ -38,55 +43,138 @@ namespace OnTheFly.FlightsService.Services
             return flights;
         }
 
-        public Flight GetFlight(string IATA, string RAB)
+        public ActionResult<Flight> GetFlight(string IATA, string RAB, string departure)
         {
-            var flight = _flightsRepository.GetFlight(IATA, RAB);
+            DateTime parseDateTime = ParseDate(departure);
 
-            string date = $"{flight.Departure.Day}/{flight.Departure.Month}/{flight.Departure.Year} {flight.Departure.Hour - 3}:{flight.Departure.Minute}:{flight.Departure.Second}";
-            DateTime dateTime = DateTime.Parse(date);
-            flight.Departure = dateTime;
+            if (ValidateIATA(IATA) && ValidateRAB(RAB))
+            {
+                var flight = _flightsRepository.GetFlight(IATA.ToUpper(), RAB.ToUpper(), parseDateTime);
 
-            return flight;
+                if(flight == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                string date = $"{flight.Departure.Day}/{flight.Departure.Month}/{flight.Departure.Year} {flight.Departure.Hour - 3}:{flight.Departure.Minute}:{flight.Departure.Second}";
+                DateTime dateTime = DateTime.Parse(date);
+                flight.Departure = dateTime;
+
+                return flight;
+            }
+            else return new BadRequestResult();
         }
 
-        public async Task<Flight> CreateFlight(CreateFlightDTO flightDTO)
+        public async Task<ActionResult<Flight>> CreateFlight(CreateFlightDTO flightDTO)
         {
-            HttpResponseMessage response = await _airCraftClient.GetAsync(_linkHost + flightDTO.RAB);
-            response.EnsureSuccessStatusCode();
+            if (!ValidateRAB(flightDTO.RAB) || !ValidateIATA(flightDTO.IATA))
+            {
+                return new BadRequestResult();
+            }
 
-            string airCraftResponse = await response.Content.ReadAsStringAsync();
-            AirCraft plane = JsonConvert.DeserializeObject<AirCraft>(airCraftResponse);
+            // Get AirCraft
+            HttpResponseMessage airCraftResponse = await _flightstClient.GetAsync(_airCraftHost + flightDTO.RAB.ToUpper());
+            airCraftResponse.EnsureSuccessStatusCode();
 
-            var dateTimeB = flightDTO.Departure;
-            var format = "dd/MM/yyyy HH:mm:ss";
-            var dateTime = DateTime.ParseExact(dateTimeB, format, CultureInfo.InvariantCulture);
+            string airCraftStr = await airCraftResponse.Content.ReadAsStringAsync();
+            AirCraft plane = JsonConvert.DeserializeObject<AirCraft>(airCraftStr);
 
+            // Get Airport
+            HttpResponseMessage airportResponse = await _flightstClient.GetAsync(_airportHost + flightDTO.IATA.ToUpper());
+            airportResponse.EnsureSuccessStatusCode();
+
+            string airportStr = await airportResponse.Content.ReadAsStringAsync();
+            Airport airport = BsonSerializer.Deserialize<Airport>(airportStr);
+
+            var date = ParseDate(flightDTO.Departure);
+
+            if (plane.Company.Status == true)
+            {
+                return new StatusCodeResult(401);
+            }
 
             Flight flight = new()
             {
-                Destiny = new Airport()
-                {
-                    iata = "ABC",
-                    state = "SP",
-                    city = "Araraquara"
-                },
+                Destiny = airport,
                 Plane = plane,
                 Sale = plane.Capacity,
-                Departure = dateTime,
+                Departure = date,
                 Status = flightDTO.Status
             };
 
-            return _flightsRepository.CreateFlight(flight);
+            return (Flight)_flightsRepository.CreateFlight(flight);
         }
 
-        public Flight UpdateFlight(string IATA, string RAB, Flight flight)
+        public ActionResult<Flight> UpdateFlight(string IATA, string RAB, UpdateFlightDTO flightDTO)
         {
-            return _flightsRepository.UpdateFlight(IATA, RAB, flight);
+            DateTime date = ParseDate(flightDTO.Departure);
+
+            if (ValidateIATA(IATA) && ValidateRAB(RAB))
+            {
+                var flight = _flightsRepository.GetFlight(IATA.ToUpper(), RAB.ToUpper(), date);
+
+                if(flight == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                return _flightsRepository.UpdateFlight(IATA.ToUpper(), RAB.ToUpper(), date, flightDTO);
+            }
+
+            return new BadRequestResult();
         }
 
-        public ActionResult<Flight> DeleteFlight(string IATA, string RAB)
+        public ActionResult<Flight> DeleteFlight(string IATA, string RAB, string departure)
         {
-            return _flightsRepository.DeleteFlight(IATA, RAB);
+            DateTime date = ParseDate(departure);
+
+            if (ValidateIATA(IATA) && ValidateRAB(RAB))
+            {
+                var flight = _flightsRepository.GetFlight(IATA.ToUpper(), RAB.ToUpper(), date);
+
+                if (flight == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                return _flightsRepository.DeleteFlight(IATA.ToUpper(), RAB.ToUpper(), date);
+            }
+
+            return new BadRequestResult();
+        }
+
+        private static DateTime ParseDate(string date)
+        {
+            var dateTimeB = date;
+            var format = "dd/MM/yyyy HH:mm";
+            return DateTime.ParseExact(dateTimeB, format, CultureInfo.InvariantCulture);
+        }
+
+        private static bool ValidateIATA(string iata)
+        {
+            if (String.IsNullOrWhiteSpace(iata)) return false;
+
+            for (int i = 0; i < iata.Length; i++)
+            {
+                if (!Char.IsLetter(iata[i])) return false;
+            }
+
+            return true;
+        }
+
+        private static bool ValidateRAB(string rab)
+        {
+            rab = rab.ToUpper();
+            if (String.IsNullOrWhiteSpace(rab)) return false;
+
+            if (rab[2] !=  '-') return false;
+
+            string[] vetRab = rab.Split("-");
+            string rab1 = $"{vetRab[0]}{rab[2]}";
+
+            if (rab1 != "PT-" && rab1 != "PR-") return false;
+
+            return true;
         }
     }
 }

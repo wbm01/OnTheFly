@@ -2,6 +2,7 @@
 using Models;
 using MongoDB.Driver;
 using OnTheFly.FlightsService.config;
+using OnTheFly.FlightsService.DTOs;
 
 namespace OnTheFly.FlightsService.Repositories
 {
@@ -17,14 +18,9 @@ namespace OnTheFly.FlightsService.Repositories
             _flightRepository = database.GetCollection<Flight>(config.FlightCollectionName);
         }
 
-        public Flight GetFlight(string IATA, string RAB)
+        public Flight GetFlight(string IATA, string RAB, DateTime date)
         {
-            var builder = Builders<Flight>.Filter;
-
-            var airPort = builder.Eq(f => f.Destiny.iata, IATA);
-            var plane = builder.Eq(f => f.Plane.RAB, RAB);
-
-            var filter = builder.And(airPort, plane);
+            var filter = CreateFilter(IATA, RAB, date);
             
             return _flightRepository.Find(filter).FirstOrDefault();
         }
@@ -38,35 +34,36 @@ namespace OnTheFly.FlightsService.Repositories
             return flight;
         }
 
-        public Flight UpdateFlight(string IATA, string RAB, Flight flight)
+        public Flight UpdateFlight(string IATA, string RAB, DateTime date, UpdateFlightDTO flightDTO)
         {
-            var filter = CreateFilter(IATA, RAB);
-            Flight flight1 = _flightRepository.Find(filter).FirstOrDefault();
+            var filter = CreateFilter(IATA, RAB, date);
+            Flight flight = _flightRepository.Find(filter).FirstOrDefault();
 
-            flight1.Status = flight.Status;
+            flight.Status = flightDTO.Status;
 
-            _flightRepository.ReplaceOne(filter, flight1);
+            _flightRepository.ReplaceOne(filter, flight);
 
-            return flight1;
+            return flight;
         }
 
-        public ActionResult<Flight> DeleteFlight(string IATA, string RAB)
+        public ActionResult<Flight> DeleteFlight(string IATA, string RAB, DateTime date)
         {
-            var filter = CreateFilter(IATA, RAB);
+            var filter = CreateFilter(IATA, RAB, date);
 
             _flightRepository.FindOneAndDelete(filter);
 
             return _flightRepository.FindOneAndDelete(filter);
         }
 
-        private FilterDefinition<Flight> CreateFilter(string IATA, string RAB)
+        private FilterDefinition<Flight> CreateFilter(string IATA, string RAB, DateTime date)
         {
             var builder = Builders<Flight>.Filter;
 
             var airPort = builder.Eq(f => f.Destiny.iata, IATA);
             var plane = builder.Eq(f => f.Plane.RAB, RAB);
+            var departure = builder.Eq(f => f.Departure, date);
 
-            var filter = builder.And(airPort, plane);
+            var filter = builder.And(airPort, plane, departure);
 
             return filter;
         }
