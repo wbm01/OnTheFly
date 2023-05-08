@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using OnTheFly.PassengerServices.Services;
 
 namespace OnTheFly.PassengerServices.Controllers
@@ -26,7 +27,7 @@ namespace OnTheFly.PassengerServices.Controllers
             return _passengerService.GetPassengerByCPF(CPF);
         }
         [HttpPost]
-        public ActionResult<Passenger> PostPassenger(Passenger passenger)
+        public ActionResult<Passenger> PostPassenger(CreatePassengerDTO passenger)
         {
             return _passengerService.PostPassenger(passenger);
         }

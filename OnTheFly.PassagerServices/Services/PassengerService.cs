@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using OnTheFly.PassengerServices.Repositories;
 using Services;
 
@@ -21,7 +23,18 @@ namespace OnTheFly.PassengerServices.Services
         }
         public List<Passenger> GetPassenger()
         {
-            return _passengerRepository.GetPassenger();
+            List<Passenger> response = _passengerRepository.GetPassenger();
+            List<Passenger> passengers = new List<Passenger>();
+
+            foreach(var passenger in response)
+            {
+                string date = $"{passenger.DtBirth.Day}/{passenger.DtBirth.Month}/{passenger.DtBirth.Year}";
+                DateTime dateTime = DateTime.Parse(date);
+                passenger.DtBirth = dateTime;
+                passengers.Add(passenger);  
+            }
+
+            return passengers;
         }
         public ActionResult<Passenger> GetPassengerByCPF(string CPF)
         {
@@ -30,16 +43,24 @@ namespace OnTheFly.PassengerServices.Services
 
             return _passengerRepository.GetPassengerByCPF(CPF);
         }
-        public ActionResult<Passenger> PostPassenger(Passenger passenger)
+        public ActionResult<Passenger> PostPassenger(CreatePassengerDTO passenger)
         {
             if (!ValidarCPF(passenger.CPF))
                 return new BadRequestResult();
-            
-            Address address = PostOfficeService.GetAddress(passenger.Address.CEP).Result;
-            address.Number = passenger.Address.Number;
-            passenger.Address = address;
 
-            return _passengerRepository.PostPassenger(passenger);
+            if(passenger.Gender != 'M' && passenger.Gender != 'm' && passenger.Gender != 'f' && passenger.Gender != 'F')
+                return new BadRequestResult();
+
+            AddressDTO address = PostOfficeService.GetAddress(passenger.ZipCode).Result;
+            Address addressComplete = new Address(address);
+            addressComplete.Number = passenger.Number;
+            Passenger passengerComplete = new Passenger(passenger);
+            passengerComplete.Address = addressComplete;
+
+            var date = ParseDate(passenger.DtBirth);
+            passengerComplete.DtBirth = date;
+
+            return _passengerRepository.PostPassenger(passengerComplete);
         }
         public ActionResult<Passenger> UpdatePassenger(Passenger passenger, string CPF)
         {
@@ -49,7 +70,7 @@ namespace OnTheFly.PassengerServices.Services
             return _passengerRepository.UpdatePassenger(passenger, CPF);    
         }
 
-        public static bool ValidarCPF(string sourceCPF)
+        private static bool ValidarCPF(string sourceCPF)
         {
             if (String.IsNullOrWhiteSpace(sourceCPF))
                 return false;
@@ -124,6 +145,13 @@ namespace OnTheFly.PassengerServices.Services
             }
             // CPF Válido!
             return true;
+        }
+
+        private static DateTime ParseDate(string date)
+        {
+            var dateTimeB = date;
+            var format = "dd/MM/yyyy";
+            return DateTime.ParseExact(dateTimeB, format, CultureInfo.InvariantCulture);
         }
 
     }
