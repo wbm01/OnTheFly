@@ -34,7 +34,11 @@ namespace OnTheFly.CompanyServices.Repositories
 
         public Company UpdateCompany(string CNPJ, Company company)
         {
+            //var options = new FindOneAndUpdateOptions<Company, Company> { };
+            //var update = Builders<Company>.Update.Set();
+            //var newcompany = _companyRepository.FindOneAndUpdate<Company>(a => a.CNPJ == CNPJ, update,  company);
             _companyRepository.ReplaceOne(c => c.CNPJ == CNPJ, company);
+
             return company;
         }
     }

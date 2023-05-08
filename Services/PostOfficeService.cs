@@ -6,7 +6,7 @@ namespace Services
     public class PostOfficeService
     {
         static readonly HttpClient street = new HttpClient();
-        public async Task<AddressDTO> GetAddress(string zipCode)
+        public static async Task<AddressDTO> GetAddress(string zipCode)
         {
             try
             {

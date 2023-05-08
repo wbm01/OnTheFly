@@ -15,9 +15,9 @@ namespace Models
     public class Airport
     {
         //[BsonId]
-        [JsonPropertyName("_id")]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string id { get; set; }
+        //[JsonPropertyName("_id")]
+        //[BsonRepresentation(BsonType.ObjectId)]
+        //public string id { get; set; }
         [JsonPropertyName("iata")]
         [BsonRepresentation(BsonType.String)]
         public string iata { get; set; }
