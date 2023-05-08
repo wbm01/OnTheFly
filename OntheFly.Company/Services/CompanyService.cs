@@ -23,14 +23,23 @@ namespace OnTheFly.CompanyServices.Services
             if (String.IsNullOrWhiteSpace(company.CNPJ))
                 return new BadRequestResult();
 
-            //AddressDTO addressDTO = PostOfficeService.GetAddress(company.Address.ZipCode).Result;
-            //Address addressComplete = new Address(addressDTO);
-            //addressComplete.Number = company.Address.Number;
-            //company.Address = addressComplete;
+            AddressDTO addressDTO = PostOfficeService.GetAddress(company.Address.ZipCode).Result;
+            Address addressComplete = new Address(addressDTO);
+            addressComplete.Number = company.Address.Number;
+            company.Address = addressComplete;
 
             return _companyRepository.PostCompany(company);
         }
-        public Company UpdateCompany(string CNPJ, Company company) => _companyRepository.UpdateCompany(CNPJ, company);
+       /* public ActionResult <Company> UpdateCompany(string CNPJ, Company company, CompanyDTO companyDTO) {
+
+            AddressDTO addressDTO = PostOfficeService.GetAddress(companyDTO.Cep).Result;
+            Address addressComplete = new Address(addressDTO);
+            addressComplete.Number = company.Number;
+            company.Address = addressComplete;
+            
+            return _companyRepository.UpdateCompany(CNPJ, company);
+        }*/
+        
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companyRepository.DeleteCompany(CNPJ);
     }
 }

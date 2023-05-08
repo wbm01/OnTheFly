@@ -36,7 +36,7 @@ namespace OnTheFly.AirportServices.Repositories
             return _airportRepository.Find<Airport>(airport => airport.iata == IATAUp).FirstOrDefault();
         }
 
-        public Airport CreateAirport(Airport airport)
+        /*public Airport CreateAirport(Airport airport)
         {
             _airportRepository.InsertOne(airport);
 
@@ -57,6 +57,6 @@ namespace OnTheFly.AirportServices.Repositories
             string IATAUp = IATA.ToUpper();
 
             return _airportRepository.FindOneAndDelete(a => a.iata == IATAUp);
-        }
+        }*/
     }
 }

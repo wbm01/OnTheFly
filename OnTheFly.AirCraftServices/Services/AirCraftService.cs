@@ -71,7 +71,7 @@ namespace OnTheFly.AirCraftServices.Services
                 Company = comp,
             };
 
-            return _airCraftRepository.CreateAirCraft(airCraft1);
+            return _airCraftRepository.CreateAirCraft(airCraft);
         }
 
         public ActionResult<AirCraft> UpdateAirCraft(string RAB, AirCraft airCraft)

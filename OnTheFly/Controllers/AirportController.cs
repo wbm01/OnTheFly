@@ -21,17 +21,37 @@ namespace OnTheFly.Controllers
         [HttpGet(Name = "Get Airports")]
         public async Task<List<AirportDTO>> GetAirports()
         {
-            return await _airportService.GetAirports();
+            List<Airport> airports = await _airportService.GetAirports();
+
+            List<AirportDTO> airportDTOs = airports.Select(airport => new AirportDTO
+            {
+                IATA = airport.iata,
+                State = airport.state,
+                City = airport.city,
+                Country = airport.country_id
+            }).ToList();
+
+            return airportDTOs;
         }
 
         [HttpGet("{IATA}", Name = "Get Airport By IATA")]
         public async Task<AirportDTO> GetAirportByIATA(string IATA)
         {
-            return await _airportService.GetAirportByIATA(IATA);
+            Airport airport = _airportService.GetAirportByIATA(IATA).Result;
+
+            AirportDTO airportDTO = new()
+            {
+                IATA = airport.iata,
+                State = airport.state,
+                City = airport.city,
+                Country = airport.country_id
+            };
+
+            return airportDTO;
         }
 
 
-        [HttpPost(Name = "Creat Airport")]
+        /*[HttpPost(Name = "Creat Airport")]
         public async Task<Airport> CreateAirport(Airport airport)
         {
             return await _airportService.CreateAirport(airport);
@@ -47,6 +67,6 @@ namespace OnTheFly.Controllers
         public async Task<Airport> UpdateAirport(string IATA, Airport airport)
         {
             return await _airportService.UpdateAirport(IATA, airport);
-        }
+        }*/
     }
 }

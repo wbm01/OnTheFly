@@ -1,4 +1,5 @@
-﻿using Models.DTO;
+﻿using Models;
+using Models.DTO;
 using Newtonsoft.Json;
 
 namespace Services
@@ -6,7 +7,7 @@ namespace Services
     public class PostOfficeService
     {
         static readonly HttpClient street = new HttpClient();
-        public async Task<AddressDTO> GetAddress(string zipCode)
+        public async static Task<AddressDTO> GetAddress(string zipCode)
         {
             try
             {
