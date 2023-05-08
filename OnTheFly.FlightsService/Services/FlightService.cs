@@ -62,6 +62,7 @@ namespace OnTheFly.FlightsService.Services
 
                 return flight;
             }
+
             else return new BadRequestResult();
         }
 
@@ -105,9 +106,9 @@ namespace OnTheFly.FlightsService.Services
             return (Flight)_flightsRepository.CreateFlight(flight);
         }
 
-        public ActionResult<Flight> UpdateFlight(string IATA, string RAB, UpdateFlightDTO flightDTO)
+        public ActionResult<Flight> UpdateFlight(string IATA, string RAB, string schedule, UpdateFlightDTO flightDTO)
         {
-            DateTime date = ParseDate(flightDTO.Departure);
+            DateTime date = ParseDate(schedule);
 
             if (ValidateIATA(IATA) && ValidateRAB(RAB))
             {
@@ -117,6 +118,8 @@ namespace OnTheFly.FlightsService.Services
                 {
                     return new NotFoundResult();
                 }
+
+                //flight.Status = flightDTO.Status;
 
                 return _flightsRepository.UpdateFlight(IATA.ToUpper(), RAB.ToUpper(), date, flightDTO);
             }

@@ -35,13 +35,13 @@ namespace OnTheFly.FlightsService.Controllers
             return _flightService.CreateFlight(flightDTO);
         }
 
-        [HttpPut("{IATA}, {RAB}", Name = "Update Flight")]
-        public ActionResult<Flight> UpdateFlight(string IATA, string RAB, UpdateFlightDTO flightDTO)
+        [HttpPut("{IATA:length(3)}, {RAB:length(6)}", Name = "Update Flight")]
+        public ActionResult<Flight> UpdateFlight(string IATA, string RAB, string schedule, UpdateFlightDTO flightDTO)
         {
-            return _flightService.UpdateFlight(IATA, RAB, flightDTO);
+            return _flightService.UpdateFlight(IATA, RAB, schedule,flightDTO);
         }
 
-        [HttpDelete("{IATA}, {RAB}", Name = "Delete Flight")]
+        [HttpDelete("{IATA:length(3)}, {RAB:length(6)}", Name = "Delete Flight")]
         public ActionResult<Flight> DeleteFlight(string IATA, string RAB, string departure)
         {
             return _flightService.DeleteFlight(IATA, RAB, departure);
