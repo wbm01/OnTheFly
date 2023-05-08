@@ -68,7 +68,8 @@ namespace OnTheFly.FlightsService.Services
                 {
                     iata = "ABC",
                     state = "SP",
-                    city = "Araraquara"
+                    city = "Araraquara",
+                    country_id = "BR"
                 },
                 Plane = plane,
                 Sale = plane.Capacity,

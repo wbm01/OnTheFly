@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Models;
 using Models.DTO;
+using MongoDB.Bson.Serialization;
 using Newtonsoft.Json;
 
 namespace Services
@@ -14,15 +15,14 @@ namespace Services
     {
         static readonly HttpClient customerAirport = new HttpClient();
 
-        public async Task<List<AirportDTO>> GetAirports()
+        public async Task<List<Airport>> GetAirports()
         {
             try
             {
                 HttpResponseMessage response = await AirportService.customerAirport.GetAsync("https://localhost:7206/api/Airport");
                 response.EnsureSuccessStatusCode();
                 string airport = await response.Content.ReadAsStringAsync();
-                var end = JsonConvert.DeserializeObject<List<AirportDTO>>(airport);
-                return end;
+                return BsonSerializer.Deserialize<List<Airport>>(airport);
             }
             catch (HttpRequestException e)
             {
@@ -30,14 +30,14 @@ namespace Services
             }
         }
 
-        public async Task<AirportDTO> GetAirportByIATA(string IATA)
+        public async Task<Airport> GetAirportByIATA(string IATA)
         {
             try
             {
                 HttpResponseMessage response = await AirportService.customerAirport.GetAsync("https://localhost:7206/api/Airport/" + IATA);
                 response.EnsureSuccessStatusCode();
                 string airport = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<AirportDTO>(airport);
+                return BsonSerializer.Deserialize<Airport>(airport);
             }
             catch (HttpRequestException e)
             {
@@ -45,7 +45,7 @@ namespace Services
             }
         }
 
-        public async Task<Airport> CreateAirport(Airport airport)
+        /*public async Task<Airport> CreateAirport(Airport airport)
         {
             try
             {
@@ -88,6 +88,6 @@ namespace Services
             {
                 throw;
             }
-        }
+        }*/
     }
 }

@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Models.DTO;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 
 namespace Models
 {
     public class Address
     {
-        [BsonId]
+
         public string ZipCode { get; set; }
         public string? Street { get; set; }
         public int Number { get; set; }
@@ -18,11 +19,12 @@ namespace Models
         public string City { get; set; }
         public string State { get; set; }
 
+
         public Address(AddressDTO addressDTO)
         {
-            this.ZipCode = addressDTO.ZipCode;
-            this.Street = addressDTO.Street;
-            this.Complement = addressDTO.Complement;
+            this.ZipCode = addressDTO.CEP;
+            this.Street = addressDTO.Logradouro;
+            this.Complement = addressDTO.Complemento;
             this.City = addressDTO.City;
             this.State = addressDTO.State;
 

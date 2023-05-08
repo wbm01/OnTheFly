@@ -8,8 +8,8 @@ namespace OnTheFly.AirportServices.Repositories
     {
         List<Airport> GetAirports();
         Airport GetAirportByIATA(string IATA);
-        Airport CreateAirport(Airport airport);
+        /*Airport CreateAirport(Airport airport);
         Airport UpdateAirport(string IATA, Airport airport);
-        ActionResult<Airport> DeleteAirport(string IATA);
+        ActionResult<Airport> DeleteAirport(string IATA);*/
     }
 }
