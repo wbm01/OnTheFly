@@ -26,12 +26,12 @@ namespace OnTheFly.PassengerServices.Services
             List<Passenger> response = _passengerRepository.GetPassenger();
             List<Passenger> passengers = new List<Passenger>();
 
-            foreach(var passenger in response)
+            foreach (var passenger in response)
             {
                 string date = $"{passenger.DtBirth.Day}/{passenger.DtBirth.Month}/{passenger.DtBirth.Year}";
                 DateTime dateTime = DateTime.Parse(date);
                 passenger.DtBirth = dateTime;
-                passengers.Add(passenger);  
+                passengers.Add(passenger);
             }
 
             return passengers;
@@ -48,13 +48,15 @@ namespace OnTheFly.PassengerServices.Services
             if (!ValidarCPF(passenger.CPF))
                 return new BadRequestResult();
 
-            if(passenger.Gender != 'M' && passenger.Gender != 'm' && passenger.Gender != 'f' && passenger.Gender != 'F')
+            if (passenger.Gender != 'M' && passenger.Gender != 'm' && passenger.Gender != 'f' && passenger.Gender != 'F')
                 return new BadRequestResult();
 
             AddressDTO address = PostOfficeService.GetAddress(passenger.ZipCode).Result;
             Address addressComplete = new Address(address);
             addressComplete.Number = passenger.Number;
+
             Passenger passengerComplete = new Passenger(passenger);
+
             passengerComplete.Address = addressComplete;
 
             var date = ParseDate(passenger.DtBirth);
@@ -62,12 +64,52 @@ namespace OnTheFly.PassengerServices.Services
 
             return _passengerRepository.PostPassenger(passengerComplete);
         }
-        public ActionResult<Passenger> UpdatePassenger(Passenger passenger, string CPF)
+        public ActionResult<Passenger> UpdatePassenger(UpdatePassengerDTO passenger, string CPF)
         {
             if (!ValidarCPF(CPF))
                 return new BadRequestResult();
 
-            return _passengerRepository.UpdatePassenger(passenger, CPF);    
+            var aux = _passengerRepository.GetPassengerByCPF(CPF);
+            aux.Name = passenger.Name;
+            aux.Gender = passenger.Gender;
+            aux.Phone = passenger.Phone;
+
+            var date = ParseDate(passenger.DtBirth);
+            aux.DtBirth = date;
+            aux.Status = passenger.Status;
+            AddressDTO address = PostOfficeService.GetAddress(passenger.ZipCode).Result;
+
+            if (address == null)
+                return new NotFoundResult();
+
+            if(address.CEP == null)
+                return new NotFoundResult();
+
+
+            Address addressComplete = new Address(address);
+            addressComplete.Number = passenger.Number;
+            aux.Address = addressComplete;  
+
+            return _passengerRepository.UpdatePassenger(aux, CPF);
+        }
+        public ActionResult<Passenger> UpdateStatus(string CPF)
+        {
+            var result = _passengerRepository.GetPassengerByCPF(CPF);
+            
+            if(result == null)
+            {
+                return new BadRequestResult();  
+            }
+
+            if(result != null)
+            {
+                return _passengerRepository.RestritPassenger(CPF);
+            }
+            else
+            {
+                return _passengerRepository.NoRestritPassenger(CPF);
+            }
+
         }
 
         private static bool ValidarCPF(string sourceCPF)

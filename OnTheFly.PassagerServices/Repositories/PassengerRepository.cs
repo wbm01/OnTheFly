@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using MongoDB.Driver;
 
 namespace OnTheFly.PassengerServices.Repositories
@@ -7,16 +8,19 @@ namespace OnTheFly.PassengerServices.Repositories
     public class PassengerRepository : IPassengerRepository
     {
         private readonly IMongoCollection<Passenger> _pasengerRepository;
+        private readonly IMongoCollection<Passenger> _pasengerRepositoryRestrit;
 
         private readonly string _connectionString = "mongodb://localhost:27017";
         private readonly string _dataBaseName = "DBPassenger";
         private readonly string _passengerCollectionName = "Passenger";
+        private readonly string _passengerCollectionRestritName = "PassengerRestrit";
 
         public PassengerRepository()
         {
             var passenger = new MongoClient(_connectionString);// estabeleci a conexão com o banco
             var database = passenger.GetDatabase(_dataBaseName);// definição do nome do banco
             _pasengerRepository = database.GetCollection<Passenger>(_passengerCollectionName);// coneção a collection
+            _pasengerRepositoryRestrit = database.GetCollection<Passenger>(_passengerCollectionRestritName);
         }
         public ActionResult<Passenger> DeletePassenger(string CPF) => _pasengerRepository.FindOneAndDelete(p => p.CPF == CPF);
         /*
@@ -39,6 +43,20 @@ namespace OnTheFly.PassengerServices.Repositories
         {
             _pasengerRepository.ReplaceOne(p => p.CPF == CPF, passenger);
             return passenger;   
+        }
+        public Passenger RestritPassenger(string CPF)
+        {
+            var consult = GetPassengerByCPF(CPF);
+            _pasengerRepositoryRestrit.InsertOne(consult);
+            _pasengerRepository.DeleteOne(c => c.CPF == CPF);
+            return consult;
+        }
+        public Passenger NoRestritPassenger(string CPF)
+        {
+            var consult = _pasengerRepositoryRestrit.Find(p => p.CPF == CPF).FirstOrDefault();
+            _pasengerRepository.InsertOne(consult);
+            _pasengerRepositoryRestrit.DeleteOne(c => c.CPF == CPF);
+            return consult;
         }
     }
 }
