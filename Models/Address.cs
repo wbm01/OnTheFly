@@ -27,12 +27,9 @@ namespace Models
             this.Complement = addressDTO.Complemento;
             this.City = addressDTO.City;
             this.State = addressDTO.State;
-
         }
-
         public Address()
         {
-
         }
     }
 }

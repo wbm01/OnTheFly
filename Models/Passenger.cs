@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Models.DTO;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Models
@@ -13,5 +14,21 @@ namespace Models
         public DateTime DtBirth { get; set; }
         public DateTime DtRegister { get; set; }
         public bool? Status { get; set; }
+        public Address Address { get; set; }
+
+        public Passenger(CreatePassengerDTO passengerDTO)
+        {
+            CPF = passengerDTO.CPF; 
+            Name = passengerDTO.Name;
+            Gender = passengerDTO.Gender;
+            Phone = passengerDTO.Phone;
+            DtRegister = DateTime.Now;
+            Status = passengerDTO.Status;
+        }
+
+        public Passenger()
+        {
+
+        }
     }
 }
