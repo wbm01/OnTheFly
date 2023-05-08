@@ -17,9 +17,11 @@ namespace OnTheFly.SalesServices.Repositories
             _saleRepository = database.GetCollection<Sale>(config.SalesCollectionName);
         }
 
-        public ActionResult<Sale> DeleteSale()
+        public ActionResult<Sale> DeleteSale(string iata, string rab, DateTime departure)
         {
-            ;
+            var filter = CreateFilter(iata, rab, departure);
+
+            return _saleRepository.FindOneAndDelete(filter);
         }
 
         public List<Sale> GetSale() => _saleRepository.Find(s => true).ToList();
@@ -37,9 +39,18 @@ namespace OnTheFly.SalesServices.Repositories
             return sale;
         }
 
-        public Sale UpdateSale()
+        public Sale UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO)
         {
-            throw new NotImplementedException();
+            var filter = CreateFilter(iata, rab, departure);
+
+            Sale sale = _saleRepository.Find(filter).FirstOrDefault(); 
+
+            sale.Sold = saleDTO.Sold;
+            sale.Reserved = saleDTO.Reserved;
+
+            _saleRepository.ReplaceOne(filter, sale);
+
+            return sale;
         }
 
         public FilterDefinition<Sale> CreateFilter(string iata, string rab, DateTime departure)

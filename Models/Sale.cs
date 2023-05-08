@@ -17,12 +17,5 @@ namespace Models
         public bool Sold { get; set; }
 
         public Sale() { }
-
-        public Sale(SaleDTO saleDTO) 
-        {
-            this.Flight.Destiny.iata = saleDTO.IATA;
-            this.Flight.Plane.RAB = saleDTO.RAB;
-            this.Flight.Departure = saleDTO.Departure;
-        }
     }
 }

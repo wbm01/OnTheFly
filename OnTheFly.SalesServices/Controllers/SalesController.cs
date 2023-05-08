@@ -26,10 +26,10 @@ namespace OnTheFly.SalesServices.Controllers
         [HttpPost]
         public ActionResult<Sale> PostSale(Sale Sale) => _saleService.PostSale(Sale);
 
-        //[HttpPut]
-        //public ActionResult<Sale> UpdateSale(string CNPJ, Sale sale) => _saleService.UpdateSale(CNPJ, sale);
+        [HttpPut("{iata}, {rab}, {departure}")]
+        public ActionResult<Sale> UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO) => _saleService.UpdateSale(iata, rab, departure, saleDTO);
 
-        //[HttpDelete]
-        //public ActionResult<Sale> DeleteSale(string CNPJ) => _saleService.DeleteSale(CNPJ);
+        [HttpDelete("{iata}, {rab}, {departure}")]
+        public ActionResult<Sale> DeleteSale(string iata, string rab, DateTime departure) => _saleService.DeleteSale(iata, rab, departure);
     }
 }

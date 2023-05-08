@@ -21,7 +21,7 @@ namespace OnTheFly.SalesServices.Services
         { 
             return _saleRepository.PostSale(sale);
         }
-        //public Sale UpdateSale(string CNPJ, Sale Sale) => _saleRepository.UpdateSale(CNPJ, Sale);
-        //public ActionResult<Sale> DeleteSale(string CNPJ) => _saleRepository.DeleteSale(CNPJ);
+        public Sale UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO) => _saleRepository.UpdateSale(iata, rab, departure, saleDTO);
+        public ActionResult<Sale> DeleteSale(string iata, string rab, DateTime departure) => _saleRepository.DeleteSale(iata, rab, departure);
     }
 }
