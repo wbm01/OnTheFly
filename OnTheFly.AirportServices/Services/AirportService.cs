@@ -25,7 +25,8 @@ namespace OnTheFly.AirportServices.Services
             return _airportRepository.GetAirportByIATA(IATA);
         }
 
-        public Airport CreateAirport(Airport airport)
+
+        /*public Airport CreateAirport(Airport airport)
         {
             return _airportRepository.CreateAirport(airport);
         }
@@ -38,6 +39,6 @@ namespace OnTheFly.AirportServices.Services
         public ActionResult<Airport> DeleteAirport(string RAB)
         {
             return _airportRepository.DeleteAirport(RAB);
-        }
+        }*/
     }
 }

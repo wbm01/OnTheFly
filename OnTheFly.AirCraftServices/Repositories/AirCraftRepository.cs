@@ -18,6 +18,8 @@ namespace OnTheFly.AirCraftServices.Repositories
 
         public List<AirCraft> GetAirCrafts() => _aircraftRepository.Find(a => true).ToList();
 
+        public List<AirCraft> GetAirCraftsByCompany(string cnpj) => _aircraftRepository.Find(a => a.Company.CNPJ == cnpj).ToList();
+
         public AirCraft GetAirCraftByRAB(string RAB)
         {
             string RABUp = RAB.ToUpper();

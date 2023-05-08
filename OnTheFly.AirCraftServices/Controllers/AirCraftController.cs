@@ -24,19 +24,19 @@ namespace OnTheFly.AirCraftServices.Controllers
         }
 
         [HttpGet("{RAB}", Name = "Get AirCraft By RAB")]
-        public AirCraft GetAirCraftByRAB(string RAB)
+        public ActionResult<AirCraft> GetAirCraftByRAB(string RAB)
         {
             return _airCraftService.GetAirCraftByRAB(RAB);
         }
 
         [HttpPost(Name = "Create AirCraft")]
-        public AirCraft CreateAirCraft(AirCraft airCraft)
+        public ActionResult<AirCraft> CreateAirCraft(AirCraft airCraft)
         {
             return _airCraftService.CreateAirCraft(airCraft);
         }
 
         [HttpPut("{RAB}", Name = "Update AirCraft")]
-        public AirCraft UpdateAirCraft(string RAB, AirCraft airCraft)
+        public ActionResult<AirCraft> UpdateAirCraft(string RAB, AirCraft airCraft)
         {
             return _airCraftService.UpdateAirCraft(RAB, airCraft);
         }

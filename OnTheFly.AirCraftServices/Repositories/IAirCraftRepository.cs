@@ -10,5 +10,6 @@ namespace OnTheFly.AirCraftServices.Repositories
         AirCraft CreateAirCraft(AirCraft aircraft);
         AirCraft UpdateAirCraft(string RAB, AirCraft aircraft);
         ActionResult<AirCraft> DeleteAirCraft(string RAB);
+        List<AirCraft> GetAirCraftsByCompany(string cnpj);
     }
 }

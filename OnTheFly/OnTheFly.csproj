@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OntheFly.Company\OnTheFly.CompanyServices.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
