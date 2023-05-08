@@ -26,13 +26,23 @@ namespace OnTheFly.CompanyServices.Services
             AddressDTO addressDTO = PostOfficeService.GetAddress(company.Address.ZipCode).Result;
             Address addressComplete = new Address(addressDTO);
             addressComplete.Number = company.Address.Number;
-            //addressComplete.Number = company.Address.Number;
             company.Address = addressComplete;
-            //company.Address = addressDTO;
 
             return _companyRepository.PostCompany(company);
         }
-        public Company UpdateCompany(string CNPJ, Company company) => _companyRepository.UpdateCompany(CNPJ, company);
+        public ActionResult <Company> UpdateCompany(string CNPJ, Company company) {
+
+            if (String.IsNullOrWhiteSpace(company.CNPJ))
+                return new BadRequestResult();
+
+            AddressDTO addressDTO = PostOfficeService.GetAddress(company.Address.ZipCode).Result;
+            Address addressComplete = new Address(addressDTO);
+            addressComplete.Number = company.Address.Number;
+            company.Address = addressComplete;
+            
+            return _companyRepository.UpdateCompany(CNPJ, company);
+        }
+        
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companyRepository.DeleteCompany(CNPJ);
     }
 }
