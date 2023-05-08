@@ -21,7 +21,7 @@ namespace OnTheFly.FlightsService.Repositories
         {
             var builder = Builders<Flight>.Filter;
 
-            var airPort = builder.Eq(f => f.Destiny.IATA, IATA);
+            var airPort = builder.Eq(f => f.Destiny.iata, IATA);
             var plane = builder.Eq(f => f.Plane.RAB, RAB);
 
             var filter = builder.And(airPort, plane);
@@ -63,7 +63,7 @@ namespace OnTheFly.FlightsService.Repositories
         {
             var builder = Builders<Flight>.Filter;
 
-            var airPort = builder.Eq(f => f.Destiny.IATA, IATA);
+            var airPort = builder.Eq(f => f.Destiny.iata, IATA);
             var plane = builder.Eq(f => f.Plane.RAB, RAB);
 
             var filter = builder.And(airPort, plane);

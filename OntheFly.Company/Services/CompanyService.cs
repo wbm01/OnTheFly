@@ -23,12 +23,12 @@ namespace OnTheFly.CompanyServices.Services
             if (String.IsNullOrWhiteSpace(company.CNPJ))
                 return new BadRequestResult();
 
-            Address address = PostOfficeService.GetAddress(company.Address.CEP).Result;
-            //Address addressComplete = new Address(addressDTO);
+            AddressDTO addressDTO = PostOfficeService.GetAddress(company.Address.ZipCode).Result;
+            Address addressComplete = new Address(addressDTO);
+            addressComplete.Number = company.Address.Number;
             //addressComplete.Number = company.Address.Number;
-            address.Number = company.Address.Number;
-            //company.Address = addressComplete;
-            company.Address = address;
+            company.Address = addressComplete;
+            //company.Address = addressDTO;
 
             return _companyRepository.PostCompany(company);
         }

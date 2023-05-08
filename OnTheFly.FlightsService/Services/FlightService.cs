@@ -66,10 +66,10 @@ namespace OnTheFly.FlightsService.Services
             {
                 Destiny = new Airport()
                 {
-                    IATA = "ABC",
-                    State = "SP",
-                    City = "Araraquara",
-                    Country = "BR"
+                    iata = "ABC",
+                    state = "SP",
+                    city = "Araraquara",
+                    country_id = "BR"
                 },
                 Plane = plane,
                 Sale = plane.Capacity,
