@@ -75,7 +75,7 @@ namespace Services
             }
         }
 
-        public async Task<Company> UpdateCompany(string CNPJ, Company company)
+        public async Task<Company> UpdateCompany(string CNPJ, CompanyDTO company)
         {
             try
             {

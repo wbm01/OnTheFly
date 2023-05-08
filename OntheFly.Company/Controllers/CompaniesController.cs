@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using OnTheFly.CompanyServices.Services;
 
 namespace OnTheFly.CompanyServices.Controllers
@@ -25,7 +26,7 @@ namespace OnTheFly.CompanyServices.Controllers
         public ActionResult<Company> PostCompany(Company company) => _companiesService.PostCompany(company);
 
         [HttpPut]
-        public ActionResult<Company> UpdateCompany(string CNPJ, Company company) => _companiesService.UpdateCompany(CNPJ, company);
+        public ActionResult<Company> UpdateCompany(string CNPJ, CompanyDTO company) => _companiesService.UpdateCompany(CNPJ, company);
 
         [HttpDelete]
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companiesService.DeleteCompany(CNPJ);

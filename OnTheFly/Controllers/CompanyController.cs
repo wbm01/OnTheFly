@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using Services;
 
 namespace OnTheFly.Controllers
@@ -43,7 +44,7 @@ namespace OnTheFly.Controllers
         }
 
         [HttpPut("{CNPJ}", Name = "Update Company")]
-        public async Task<Company> UpdateCompany(string CNPJ, Company company)
+        public async Task<CompanyDTO> UpdateCompany(string CNPJ, Company company)
         {
             return await _companyService.UpdateCompany(CNPJ, company);
         }

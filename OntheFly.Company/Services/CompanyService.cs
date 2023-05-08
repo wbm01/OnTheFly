@@ -24,21 +24,59 @@ namespace OnTheFly.CompanyServices.Services
                 return new BadRequestResult();
 
             AddressDTO addressDTO = PostOfficeService.GetAddress(company.Address.ZipCode).Result;
+
+            if (addressDTO == null)
+            {
+                return new NotFoundResult();
+            }
+
+            if(addressDTO.CEP == null)
+            {
+                return new NotFoundResult();
+            }
+
             Address addressComplete = new Address(addressDTO);
             addressComplete.Number = company.Address.Number;
             company.Address = addressComplete;
 
+            if(company.NameOpt == "string" || company.NameOpt == "" || string.IsNullOrWhiteSpace(company.NameOpt))
+            {
+                company.NameOpt = company.Name;
+            }
+
             return _companyRepository.PostCompany(company);
         }
-       /* public ActionResult <Company> UpdateCompany(string CNPJ, Company company, CompanyDTO companyDTO) {
 
-            AddressDTO addressDTO = PostOfficeService.GetAddress(companyDTO.Cep).Result;
+        public ActionResult <Company> UpdateCompany(string CNPJ, CompanyDTO companyDTO) {
+
+            var company = _companyRepository.GetCompanyByCNPJ(CNPJ);
+
+            AddressDTO addressDTO = PostOfficeService.GetAddress(companyDTO.ZipCode).Result;
+
+            if(addressDTO == null)
+            {
+                return new NotFoundResult();
+            }
+
+            if (addressDTO.CEP == null)
+            {
+                return new NotFoundResult();
+            }
+
             Address addressComplete = new Address(addressDTO);
-            addressComplete.Number = company.Number;
+            addressComplete.Number = companyDTO.Number;
+
+            if (company.NameOpt == "string" || company.NameOpt == "" || string.IsNullOrWhiteSpace(company.NameOpt))
+            {
+                company.NameOpt = company.Name;
+            }
+
+            company.NameOpt = companyDTO.NameOpt;
+            company.Status = companyDTO.Status;
             company.Address = addressComplete;
             
             return _companyRepository.UpdateCompany(CNPJ, company);
-        }*/
+        }
         
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companyRepository.DeleteCompany(CNPJ);
     }
