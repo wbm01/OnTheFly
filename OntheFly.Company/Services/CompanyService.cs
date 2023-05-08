@@ -30,18 +30,15 @@ namespace OnTheFly.CompanyServices.Services
 
             return _companyRepository.PostCompany(company);
         }
-        public ActionResult <Company> UpdateCompany(string CNPJ, Company company) {
+       /* public ActionResult <Company> UpdateCompany(string CNPJ, Company company, CompanyDTO companyDTO) {
 
-            if (String.IsNullOrWhiteSpace(company.CNPJ))
-                return new BadRequestResult();
-
-            AddressDTO addressDTO = PostOfficeService.GetAddress(company.Address.ZipCode).Result;
+            AddressDTO addressDTO = PostOfficeService.GetAddress(companyDTO.Cep).Result;
             Address addressComplete = new Address(addressDTO);
-            addressComplete.Number = company.Address.Number;
+            addressComplete.Number = company.Number;
             company.Address = addressComplete;
             
             return _companyRepository.UpdateCompany(CNPJ, company);
-        }
+        }*/
         
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companyRepository.DeleteCompany(CNPJ);
     }
