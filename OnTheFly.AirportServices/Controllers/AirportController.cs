@@ -18,7 +18,7 @@ namespace OnTheFly.AirportServices.Controllers
         {
             _mongoDbConfig = config;
             _airportService = new(config);
-            
+
         }
 
         [HttpGet(Name = "GetAll")]
@@ -28,7 +28,7 @@ namespace OnTheFly.AirportServices.Controllers
         }
 
         [HttpGet("{iata}", Name = "GetAirportIata")]
-        public ActionResult<Airport> GetAirpotyByIATA(string iata)
+        public ActionResult<Airport> Get(string iata)
         {
             var airport = _airportService.GetAirportByIATA(iata);
 
@@ -38,7 +38,7 @@ namespace OnTheFly.AirportServices.Controllers
             return airport;
         }
 
-        [HttpPost(Name = "Create Airport")]
+        /*[HttpPost(Name = "Create Airport")]
         public Airport CreateAirport(Airport airport)
         {
             return _airportService.CreateAirport(airport);
@@ -56,6 +56,6 @@ namespace OnTheFly.AirportServices.Controllers
             _airportService.DeleteAirport(IATA);
 
             return NoContent();
-        }
+        }*/
     }
 }

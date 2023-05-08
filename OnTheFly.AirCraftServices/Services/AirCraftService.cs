@@ -26,7 +26,7 @@ namespace OnTheFly.AirCraftServices.Services
 
         public AirCraft CreateAirCraft(AirCraft airCraft)
         {
-            AirCraft airCraft1 = new()
+            /*AirCraft airCraft1 = new()
             {
                 RAB = airCraft.RAB,
                 Capacity = airCraft.Capacity,
@@ -48,9 +48,9 @@ namespace OnTheFly.AirCraftServices.Services
                         State = "SP",
                     }
                 }
-            };
+            };*/
 
-            return _airCraftRepository.CreateAirCraft(airCraft1);
+            return _airCraftRepository.CreateAirCraft(airCraft);
         }
 
         public AirCraft UpdateAirCraft(string RAB, AirCraft airCraft)
