@@ -10,5 +10,7 @@ namespace OnTheFly.CompanyServices.Repositories
         Company PostCompany(Company company);
         Company UpdateCompany(string CNPJ, Company company);
         ActionResult<Company> DeleteCompany(string CNPJ);
+        Company RestritCompany(string CNPJ);
+        Company NoRestritCompany(string CNPJ);
     }
 }

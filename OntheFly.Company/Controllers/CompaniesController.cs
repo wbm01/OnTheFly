@@ -30,5 +30,11 @@ namespace OnTheFly.CompanyServices.Controllers
 
         [HttpDelete]
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companiesService.DeleteCompany(CNPJ);
+
+        [HttpPut("{CNPJ}", Name = "Update Status")]
+        public ActionResult<Company> UpdateStatus(string CNPJ)
+        {
+            return _companiesService.UpdateStatus(CNPJ);
+        }
     }
 }

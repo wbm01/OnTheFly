@@ -77,7 +77,20 @@ namespace OnTheFly.CompanyServices.Services
             
             return _companyRepository.UpdateCompany(CNPJ, company);
         }
-        
+
+        public ActionResult<Company> UpdateStatus(string CNPJ)
+        {
+            var result = _companyRepository.GetCompanyByCNPJ(CNPJ);
+            if (result != null)
+            {
+                return _companyRepository.RestritCompany(CNPJ);
+            }
+            else
+            {
+                return _companyRepository.NoRestritCompany(CNPJ);
+            }
+        }
+
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companyRepository.DeleteCompany(CNPJ);
     }
 }

@@ -48,5 +48,11 @@ namespace OnTheFly.Controllers
         {
             return await _companyService.UpdateCompany(CNPJ, company);
         }
+
+        [HttpPut("{CNPJ}", Name = "Update Status")]
+        public async Task<Company> UpdateStatus(string CNPJ, Company company)
+        {
+            return await _companyService.UpdateStatus(CNPJ, company);
+        }
     }
 }
