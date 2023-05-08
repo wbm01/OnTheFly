@@ -9,9 +9,9 @@ namespace Models.DTO
 {
     public class AddressDTO
     {
-        public int Id { get; set; }
-        [JsonProperty("pais")]
-        public string? Country { get; set; }
+        //public int Id { get; set; }
+        //[JsonProperty("pais")]
+        //public string? Country { get; set; }
         [JsonProperty("cep")]
         public string CEP { get; set; }
         [JsonProperty("bairro")]
@@ -22,8 +22,10 @@ namespace Models.DTO
         public string State { get; set; }
         [JsonProperty("logradouro")]
         public string Logradouro { get; set; }
-        public int Number { get; set; }
         [JsonProperty("complemento")]
         public string Complemento { get; set; }
+        public int Number { get; set; }
+       
+        
     }
 }
