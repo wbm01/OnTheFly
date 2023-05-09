@@ -34,13 +34,13 @@ namespace OnTheFly.AirCraftServices.Services
 
                 if(airCraft == null)
                 {
-                    return new BadRequestResult();
+                    return new BadRequestObjectResult("Aeronave não encontrada!");
                 }
 
                 return airCraft;
             }
 
-            return new BadRequestResult();
+            return new BadRequestObjectResult("RAB inválido!");
         }
 
         public async Task<ActionResult<AirCraft>> CreateAirCraft(CreateAirCraftDTO airCraftDTO)
@@ -53,12 +53,12 @@ namespace OnTheFly.AirCraftServices.Services
 
             if (company == null)
             {
-                return new NotFoundResult();
+                return new NotFoundObjectResult("Companhia não encontrada!");
             }
 
             if (!ValidateRAB(airCraftDTO.rab))
             {
-                return new BadRequestResult();
+                return new BadRequestObjectResult("RAB inválido!");
             }
 
             AirCraft airCraft = new()
@@ -82,7 +82,7 @@ namespace OnTheFly.AirCraftServices.Services
 
                 if(airCraft == null)
                 {
-                    return new BadRequestResult();
+                    return new NotFoundObjectResult("Aeronave não encontrada!");
                 }
 
                 airCraft.DtLastFlight = DtLast;
@@ -90,7 +90,7 @@ namespace OnTheFly.AirCraftServices.Services
                 return _airCraftRepository.UpdateAirCraft(RAB, airCraft);
             }
 
-            return new BadRequestResult();
+            return new BadRequestObjectResult("RAB inválido!");
         }
 
         public ActionResult<AirCraft> Delete(string RAB)
@@ -101,7 +101,7 @@ namespace OnTheFly.AirCraftServices.Services
 
                 if(airCraft == null)
                 {
-                    return new NotFoundResult();
+                    return new NotFoundObjectResult("Aeronave não encontrada!");
                 }
 
                 int airCraftsCount = _airCraftRepository.GetAirCraftsByCompany(airCraft.Company.CNPJ).Count;
@@ -114,7 +114,7 @@ namespace OnTheFly.AirCraftServices.Services
                 return _airCraftRepository.DeleteAirCraft(RAB);
             }
 
-            return new BadRequestResult();
+            return new BadRequestObjectResult("RAB inválido!");
         }
 
         private static DateTime ParseDate(string date)
