@@ -16,11 +16,13 @@ namespace OnTheFly.PassengerServices.Controllers
         {
             _passengerService = new PassengerService();
         }
+
         [HttpGet]
         public ActionResult<List<Passenger>> GetPassenger()
         {
             return _passengerService.GetPassenger();
         }
+
         [HttpGet("{CPF}")]
         public ActionResult<Passenger> GetPassengerByCPF(string CPF)
         {
@@ -35,20 +37,26 @@ namespace OnTheFly.PassengerServices.Controllers
         {
             return _passengerService.PostPassenger(passenger);
         }
+
         [HttpPost("{CPF}")]
         public ActionResult<Passenger> UpdateStatus(string CPF)
         {
             return _passengerService.UpdateStatus(CPF);
         }
+
         [HttpPut]
         public ActionResult<Passenger> UpdatePassenger(string CPF, UpdatePassengerDTO passenger)
         {
             return _passengerService.UpdatePassenger(passenger, CPF);
         }
+
         [HttpDelete("{CPF}")]
         public ActionResult<Passenger> DeletePassenger(string CPF)
         { 
             return _passengerService.DeletePassenger(CPF);
         }
+
+        [HttpGet("Get Restrit Passenger By CPF")]
+        public ActionResult<Passenger> GetRestritPassengerByCPF(string CPF) => _passengerService.GetRestritPassengerByCPF(CPF);
     }
 }

@@ -199,6 +199,8 @@ namespace OnTheFly.PassengerServices.Services
             return DateTime.ParseExact(dateTimeB, format, CultureInfo.InvariantCulture);
         }
 
+        public Passenger GetRestritPassengerByCPF(string CPF) => _passengerRepository.GetRestritPassengerByCPF(CPF);
+
     }
 
 

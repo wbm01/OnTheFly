@@ -60,5 +60,7 @@ namespace OnTheFly.PassengerServices.Repositories
             _pasengerRepositoryRestrit.DeleteOne(c => c.CPF == CPF);
             return consult;
         }
+
+        public Passenger GetRestritPassengerByCPF(string CPF) => _pasengerRepositoryRestrit.Find(c => c.CPF == CPF).FirstOrDefault();
     }
 }
