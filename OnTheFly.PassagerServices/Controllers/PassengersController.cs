@@ -31,8 +31,13 @@ namespace OnTheFly.PassengerServices.Controllers
         {
             return _passengerService.PostPassenger(passenger);
         }
+        [HttpPost("{CPF}")]
+        public ActionResult<Passenger> UpdateStatus(string CPF)
+        {
+            return _passengerService.UpdateStatus(CPF);
+        }
         [HttpPut]
-        public ActionResult<Passenger> UpdatePassenger(Passenger passenger, string CPF)
+        public ActionResult<Passenger> UpdatePassenger(string CPF, UpdatePassengerDTO passenger)
         {
             return _passengerService.UpdatePassenger(passenger, CPF);
         }
