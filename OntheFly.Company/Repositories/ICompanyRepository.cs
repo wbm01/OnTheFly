@@ -12,5 +12,6 @@ namespace OnTheFly.CompanyServices.Repositories
         ActionResult<Company> DeleteCompany(string CNPJ);
         Company RestritCompany(string CNPJ);
         Company NoRestritCompany(string CNPJ);
+        List<Company> GetRestritCompany();
     }
 }

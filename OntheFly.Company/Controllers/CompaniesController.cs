@@ -16,11 +16,14 @@ namespace OnTheFly.CompanyServices.Controllers
             _companiesService = new();
         }
 
-        [HttpGet]
+        [HttpGet("GetListCompany")]
         public ActionResult<List<Company>> GetCompany() => _companiesService.GetCompany();
 
         [HttpGet("{CNPJ}", Name = "Get Company By CNPJ")]
         public ActionResult<Company> GetCompanyByCNPJ(string CNPJ) => _companiesService.GetCompanyByCNPJ(CNPJ);
+
+        [HttpGet("Get Restrit Company")]
+        public ActionResult<List<Company>> GetRestritCompany() => _companiesService.GetRestritCompany();
 
         [HttpPost]
         public ActionResult<Company> PostCompany(Company company) => _companiesService.PostCompany(company);

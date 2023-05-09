@@ -29,6 +29,8 @@ namespace OnTheFly.CompanyServices.Repositories
 
         public Company GetCompanyByCNPJ(string CNPJ) => _companyRepository.Find(c => c.CNPJ == CNPJ).FirstOrDefault();
 
+        public List<Company> GetRestritCompany() => _companyRepositoryRestrit.Find(c => true).ToList();
+
         public Company PostCompany(Company company)
         {
             _companyRepository.InsertOne(company);

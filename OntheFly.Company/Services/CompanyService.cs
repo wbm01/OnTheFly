@@ -18,53 +18,55 @@ namespace OnTheFly.CompanyServices.Services
 
         public List<Company> GetCompany() => _companyRepository.GetCompany();
         public Company GetCompanyByCNPJ(string CNPJ) => _companyRepository.GetCompanyByCNPJ(CNPJ);
+
+        public List<Company> GetRestritCompany() => _companyRepository.GetRestritCompany();
+
         public ActionResult<Company> PostCompany(Company company)
         {
-            if(CheckCNPJ(company.CNPJ) == false)
+            if (CheckCNPJ(company.CNPJ) == false)
             {
                 return new BadRequestResult();
             }
 
             var result = _companyRepository.GetCompanyByCNPJ(company.CNPJ);
 
-            if(result.CNPJ == company.CNPJ)
+            if (result == null)
             {
-                return new BadRequestObjectResult("CNPJ já cadastrado");
+                AddressDTO addressDTO = PostOfficeService.GetAddress(company.Address.ZipCode).Result;
+
+                if (addressDTO == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                if (addressDTO.CEP == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                Address addressComplete = new Address(addressDTO);
+                addressComplete.Number = company.Address.Number;
+                company.Address = addressComplete;
+
+                if (company.NameOpt == "string" || company.NameOpt == "" || string.IsNullOrWhiteSpace(company.NameOpt))
+                {
+                    company.NameOpt = company.Name;
+                }
+
+                return _companyRepository.PostCompany(company);
             }
 
-
-
-            AddressDTO addressDTO = PostOfficeService.GetAddress(company.Address.ZipCode).Result;
-
-            if (addressDTO == null)
-            {
-                return new NotFoundResult();
-            }
-
-            if(addressDTO.CEP == null)
-            {
-                return new NotFoundResult();
-            }
-
-            Address addressComplete = new Address(addressDTO);
-            addressComplete.Number = company.Address.Number;
-            company.Address = addressComplete;
-
-            if(company.NameOpt == "string" || company.NameOpt == "" || string.IsNullOrWhiteSpace(company.NameOpt))
-            {
-                company.NameOpt = company.Name;
-            }
-
-            return _companyRepository.PostCompany(company);
+            return new BadRequestResult();
         }
 
-        public ActionResult <Company> UpdateCompany(string CNPJ, CompanyDTO companyDTO) {
+        public ActionResult<Company> UpdateCompany(string CNPJ, CompanyDTO companyDTO)
+        {
 
             var company = _companyRepository.GetCompanyByCNPJ(CNPJ);
 
             AddressDTO addressDTO = PostOfficeService.GetAddress(companyDTO.ZipCode).Result;
 
-            if(addressDTO == null)
+            if (addressDTO == null)
             {
                 return new NotFoundResult();
             }
@@ -85,12 +87,14 @@ namespace OnTheFly.CompanyServices.Services
             company.NameOpt = companyDTO.NameOpt;
             company.Status = companyDTO.Status;
             company.Address = addressComplete;
-            
+
             return _companyRepository.UpdateCompany(CNPJ, company);
         }
 
         public ActionResult<Company> UpdateStatus(string CNPJ)
         {
+            CNPJ = CNPJ.Replace("%2F", "/");
+
             var result = _companyRepository.GetCompanyByCNPJ(CNPJ);
             if (result != null)
             {
