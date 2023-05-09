@@ -36,13 +36,14 @@ namespace OnTheFly.Services
             return JsonConvert.DeserializeObject<Flight>(airCraftResponse);
         }
 
-        public async Task<Flight> CreateFlight(CreateFlightDTO flightDTO)
+        public async Task<ActionResult<Flight>> CreateFlight(CreateFlightDTO flightDTO)
         {
             HttpResponseMessage response = await _flightClient.PostAsJsonAsync(_flightHost, flightDTO);
             response.EnsureSuccessStatusCode();
 
             string airCraftResponse = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Flight>(airCraftResponse);
+
         }
 
         public async Task<Flight> UpdateFlight(string IATA, string RAB, string schedule, UpdateFlightDTO flightDTO)
