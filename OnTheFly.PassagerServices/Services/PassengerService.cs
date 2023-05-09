@@ -63,6 +63,12 @@ namespace OnTheFly.PassengerServices.Services
             passengerComplete.Address = addressComplete;
 
             var date = ParseDate(passenger.DtBirth);
+
+            int result = DateTime.Compare(date, DateTime.Now);
+
+            if (result > 0)
+                return new BadRequestResult();
+
             passengerComplete.DtBirth = date;
 
             return _passengerRepository.PostPassenger(passengerComplete);
