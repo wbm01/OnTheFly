@@ -89,6 +89,13 @@ namespace OnTheFly.FlightsService.Services
 
             var date = ParseDate(flightDTO.Departure);
 
+            var flightExist = GetFlight(flightDTO.IATA, flightDTO.RAB, flightDTO.Departure);
+
+            if(flightExist != null)
+            {
+                return new BadRequestObjectResult("Esse Voo já existe!");
+            }
+
             if (plane.Company.Status == true)
             {
                 return new StatusCodeResult(401);

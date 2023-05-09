@@ -37,7 +37,7 @@ namespace OnTheFly.AirCraftServices.Controllers
         }
 
         [HttpPut("{RAB}", Name = "Update AirCraft")]
-        public ActionResult<AirCraft> UpdateAirCraft(string RAB, string DtLastFlight)
+        public ActionResult<AirCraft> UpdateAirCraft(string RAB, [FromBody]string DtLastFlight)
         {
             return _airCraftService.UpdateAirCraft(RAB, DtLastFlight);
         }
