@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.DTO;
 using MongoDB.Driver;
@@ -9,6 +10,7 @@ namespace OnTheFly.SalesServices.Repositories
     public class SaleRepository : ISaleRepository
     {
         private readonly IMongoCollection<Sale> _saleRepository;
+
 
         public SaleRepository(IMongoDBConfig config)
         {
@@ -31,9 +33,9 @@ namespace OnTheFly.SalesServices.Repositories
             var filter = CreateFilter(iata, rab, departure);
 
             return _saleRepository.Find(filter).FirstOrDefault();
-        }
+        }       
 
-        public Sale PostSale(Sale sale)
+        public ActionResult<Sale> PostSale(Sale sale)
         {
             _saleRepository.InsertOne(sale);
             return sale;

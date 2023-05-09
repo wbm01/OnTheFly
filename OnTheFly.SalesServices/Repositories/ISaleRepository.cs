@@ -8,7 +8,7 @@ namespace OnTheFly.SalesServices.Repositories
     {
         List<Sale> GetSale();
         Sale GetSaleByFlight(string iata, string rab, DateTime departure);
-        Sale PostSale(Sale sale);
+        ActionResult<Sale> PostSale(Sale sale);
         Sale UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO);
         ActionResult<Sale> DeleteSale(string iata, string rab, DateTime departure);
     }
