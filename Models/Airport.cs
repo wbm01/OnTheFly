@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace Models
 {
-    [JsonObject(MemberSerialization.OptIn)]
+    //[JsonObject(MemberSerialization.OptIn)]
     public class Airport
     {
         [BsonId]
@@ -41,7 +41,7 @@ namespace Models
         [JsonPropertyName("state")]
         public string state { get; set; }
 
-    public Airport(AirportDTO airportDTO)
+        public Airport(AirportDTO airportDTO)
         {
             this.iata = airportDTO.IATA;
             this.state = airportDTO.State;
@@ -55,5 +55,5 @@ namespace Models
 
         }
     }
-}       
+}
 
