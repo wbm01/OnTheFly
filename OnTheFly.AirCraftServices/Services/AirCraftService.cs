@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
+using Newtonsoft.Json;
 using OnTheFly.AirCraftServices.config;
 using OnTheFly.AirCraftServices.Repositories;
 
@@ -8,10 +11,14 @@ namespace OnTheFly.AirCraftServices.Services
     public class AirCraftService
     {
         private readonly IAirCraftRepository _airCraftRepository;
+        private readonly HttpClient _airCraftClient;
+        private readonly string _companyHost;
 
         public AirCraftService(AirCraftRepository repository)
         {
+            _airCraftClient = new();
             _airCraftRepository = repository;
+            _companyHost = "https://localhost:7226/api/Companies/";
         }
 
         public List<AirCraft> GetAirCrafts()
@@ -23,75 +30,98 @@ namespace OnTheFly.AirCraftServices.Services
         {
             if (ValidateRAB(RAB))
             {
-                return _airCraftRepository.GetAirCraftByRAB(RAB);
+                AirCraft airCraft = _airCraftRepository.GetAirCraftByRAB(RAB);
+
+                if(airCraft == null)
+                {
+                    return new BadRequestObjectResult("Aeronave não encontrada!");
+                }
+
+                return airCraft;
             }
 
-            return new BadRequestResult();
+            return new BadRequestObjectResult("RAB inválido!");
         }
 
-        public ActionResult<AirCraft> CreateAirCraft(AirCraft airCraft)
+        public async Task<ActionResult<AirCraft>> CreateAirCraft(CreateAirCraftDTO airCraftDTO)
         {
-            if (!ValidateRAB(airCraft.RAB))
+            HttpResponseMessage response = await _airCraftClient.GetAsync(_companyHost + airCraftDTO.cnpj);
+            response.EnsureSuccessStatusCode();
+
+            string companyResponse = await response.Content.ReadAsStringAsync();
+            Company company = JsonConvert.DeserializeObject<Company>(companyResponse);
+
+            if (company == null)
             {
-                return new BadRequestResult();
+                return new NotFoundObjectResult("Companhia não encontrada!");
             }
 
-            var countAirCraftCompany = _airCraftRepository.GetAirCraftsByCompany(airCraft.Company.CNPJ).Count;
-
-            /*
-            if (countAirCraftCompany == 0)
+            if (!ValidateRAB(airCraftDTO.rab))
             {
-                //Alterar o status????
+                return new BadRequestObjectResult("RAB inválido!");
             }
-            */
 
-            Company comp = new()
+            AirCraft airCraft = new()
             {
-                CNPJ = "1234567891234567891",
-                Name = "Shalom AirLines",
-                NameOpt = "SAL",
-                DtOpen = DateTime.Now,
-                Status = false,
-                Address = new Address()
-                {
-                    ZipCode = "14840000",
-                    Street = "Rua Jornalista",
-                    Number = 183,
-                    Complement = "Casa",
-                    City = "Guariba",
-                    State = "SP",
-                }
-            };
-
-            AirCraft airCraft1 = new()
-            {
-                RAB = airCraft.RAB,
-                Capacity = airCraft.Capacity,
+                RAB = airCraftDTO.rab.ToUpper(),
+                Capacity = airCraftDTO.Capacity,
                 DtRegistry = DateTime.Now,
-                Company = comp,
+                Company = company,
             };
 
             return _airCraftRepository.CreateAirCraft(airCraft);
         }
 
-        public ActionResult<AirCraft> UpdateAirCraft(string RAB, AirCraft airCraft)
+        public ActionResult<AirCraft> UpdateAirCraft(string RAB, string DtLastFlight)
         {
             if (ValidateRAB(RAB))
             {
+                DateTime DtLast = ParseDate(DtLastFlight);
+
+                AirCraft airCraft = _airCraftRepository.GetAirCraftByRAB(RAB);
+
+                if(airCraft == null)
+                {
+                    return new NotFoundObjectResult("Aeronave não encontrada!");
+                }
+
+                airCraft.DtLastFlight = DtLast;
+
                 return _airCraftRepository.UpdateAirCraft(RAB, airCraft);
             }
 
-            return new BadRequestResult();
+            return new BadRequestObjectResult("RAB inválido!");
         }
 
         public ActionResult<AirCraft> Delete(string RAB)
         {
             if (ValidateRAB(RAB))
             {
+                AirCraft airCraft = _airCraftRepository.GetAirCraftByRAB(RAB);
+
+                if(airCraft == null)
+                {
+                    return new NotFoundObjectResult("Aeronave não encontrada!");
+                }
+
+                int airCraftsCount = _airCraftRepository.GetAirCraftsByCompany(airCraft.Company.CNPJ).Count;
+
+                if(airCraftsCount == 1)
+                {
+                    return new StatusCodeResult(401);
+                }
+
                 return _airCraftRepository.DeleteAirCraft(RAB);
             }
 
-            return new BadRequestResult();            
+            return new BadRequestObjectResult("RAB inválido!");
+        }
+
+        private static DateTime ParseDate(string date)
+        {
+            var dateTimeB = date;
+            var format = "dd/MM/yyyy HH:mm";
+            return DateTime.ParseExact(dateTimeB, format, CultureInfo.InvariantCulture);
         }
 
         private static bool ValidateRAB(string rab)

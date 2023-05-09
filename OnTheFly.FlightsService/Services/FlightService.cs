@@ -53,7 +53,7 @@ namespace OnTheFly.FlightsService.Services
 
                 if(flight == null)
                 {
-                    return new NotFoundResult();
+                    return new NotFoundObjectResult("Voo não encontrado!");
                 }
 
                 string date = $"{flight.Departure.Day}/{flight.Departure.Month}/{flight.Departure.Year} {flight.Departure.Hour - 3}:{flight.Departure.Minute}:{flight.Departure.Second}";
@@ -63,14 +63,14 @@ namespace OnTheFly.FlightsService.Services
                 return flight;
             }
 
-            else return new BadRequestResult();
+            else return new BadRequestObjectResult("RAB ou IATA inválido!");
         }
 
         public async Task<ActionResult<Flight>> CreateFlight(CreateFlightDTO flightDTO)
         {
             if (!ValidateRAB(flightDTO.RAB) || !ValidateIATA(flightDTO.IATA))
             {
-                return new BadRequestResult();
+                return new BadRequestObjectResult("RAB ou IATA inválidos");
             }
 
             // Get AirCraft
@@ -89,6 +89,13 @@ namespace OnTheFly.FlightsService.Services
 
             var date = ParseDate(flightDTO.Departure);
 
+            var flightExist = GetFlight(flightDTO.IATA, flightDTO.RAB, flightDTO.Departure);
+
+            if(flightExist != null)
+            {
+                return new BadRequestObjectResult("Esse Voo já existe!");
+            }
+
             if (plane.Company.Status == true)
             {
                 return new StatusCodeResult(401);
@@ -103,7 +110,7 @@ namespace OnTheFly.FlightsService.Services
                 Status = flightDTO.Status
             };
 
-            return (Flight)_flightsRepository.CreateFlight(flight);
+            return _flightsRepository.CreateFlight(flight);
         }
 
         public ActionResult<Flight> UpdateFlight(string IATA, string RAB, string schedule, UpdateFlightDTO flightDTO)
@@ -116,15 +123,15 @@ namespace OnTheFly.FlightsService.Services
 
                 if(flight == null)
                 {
-                    return new NotFoundResult();
+                    return new NotFoundObjectResult("Voo não encontrado!");
                 }
 
-                //flight.Status = flightDTO.Status;
+                flight.Status = flightDTO.Status;
 
                 return _flightsRepository.UpdateFlight(IATA.ToUpper(), RAB.ToUpper(), date, flightDTO);
             }
 
-            return new BadRequestResult();
+            return new BadRequestObjectResult("RAB ou IATA inválido!");
         }
 
         public ActionResult<Flight> DeleteFlight(string IATA, string RAB, string departure)
@@ -137,13 +144,13 @@ namespace OnTheFly.FlightsService.Services
 
                 if (flight == null)
                 {
-                    return new NotFoundResult();
+                    return new NotFoundObjectResult("Voo não encontrado!");
                 }
 
                 return _flightsRepository.DeleteFlight(IATA.ToUpper(), RAB.ToUpper(), date);
             }
 
-            return new BadRequestResult();
+            return new BadRequestObjectResult("RAB ou IATA inválido!");
         }
 
         private static DateTime ParseDate(string date)
