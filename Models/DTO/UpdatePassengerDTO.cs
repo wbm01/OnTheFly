@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace Models.DTO
 {
-    public class CompanyDTO
+    public class UpdatePassengerDTO
     {
-        public string NameOpt { get; set; }
+        public string Name { get; set; }
+        public char Gender { get; set; }
+        public string? Phone { get; set; }
+        public string DtBirth { get; set; }
         public bool? Status { get; set; }
         public string ZipCode { get; set; }
         public int Number { get; set; }

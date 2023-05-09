@@ -75,7 +75,22 @@ namespace Services
             }
         }
 
-        public async Task<Company> UpdateCompany(string CNPJ, Company company)
+        public async Task<CompanyDTO> UpdateCompany(string CNPJ, Company company)
+        {
+            try
+            {
+                HttpResponseMessage resposta = await customerCompany.PutAsJsonAsync("https://localhost:7226/api/Companies/" + CNPJ, company);
+                resposta.EnsureSuccessStatusCode();
+                string companyReturn = await resposta.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<CompanyDTO>(companyReturn);
+            }
+            catch (HttpRequestException e)
+            {
+                throw;
+            }
+        }
+
+        public async Task<Company> UpdateStatus(string CNPJ, Company company)
         {
             try
             {

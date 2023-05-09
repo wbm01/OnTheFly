@@ -9,15 +9,18 @@ namespace OnTheFly.CompanyServices.Repositories
     public class CompanyRepository : ICompanyRepository
     {
         private readonly IMongoCollection<Company> _companyRepository;
+        private readonly IMongoCollection<Company> _companyRepositoryRestrit;
         private readonly string _connectionString = "mongodb://localhost:27017";
         private readonly string _databaseName = "DBCompany";
         private readonly string _companyCollectionName = "Company";
+        private readonly string _companyCollectionRestritName = "CompanyRestrit";
 
         public CompanyRepository()
         {
             var company = new MongoClient(_connectionString);
             var database = company.GetDatabase(_databaseName);
             _companyRepository = database.GetCollection<Company>(_companyCollectionName);
+            _companyRepositoryRestrit = database.GetCollection<Company>(_companyCollectionRestritName);
         }
 
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companyRepository.FindOneAndDelete(a => a.CNPJ == CNPJ);
@@ -25,6 +28,8 @@ namespace OnTheFly.CompanyServices.Repositories
         public List<Company> GetCompany() => _companyRepository.Find(c => true).ToList();
 
         public Company GetCompanyByCNPJ(string CNPJ) => _companyRepository.Find(c => c.CNPJ == CNPJ).FirstOrDefault();
+
+        public List<Company> GetRestritCompany() => _companyRepositoryRestrit.Find(c => true).ToList();
 
         public Company PostCompany(Company company)
         {
@@ -40,6 +45,21 @@ namespace OnTheFly.CompanyServices.Repositories
             _companyRepository.ReplaceOne(c => c.CNPJ == CNPJ, company);
 
             return company;
+        }
+
+        public Company RestritCompany(string CNPJ)
+        {
+            var consult = GetCompanyByCNPJ(CNPJ);
+            _companyRepositoryRestrit.InsertOne(consult);
+            _companyRepository.DeleteOne(c => c.CNPJ == CNPJ);
+            return consult;
+        }
+        public Company NoRestritCompany(string CNPJ)
+        {
+            var consult = _companyRepositoryRestrit.Find(p => p.CNPJ == CNPJ).FirstOrDefault();
+            _companyRepository.InsertOne(consult);
+            _companyRepositoryRestrit.DeleteOne(c => c.CNPJ == CNPJ);
+            return consult;
         }
     }
 }
