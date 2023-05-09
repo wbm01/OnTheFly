@@ -10,7 +10,7 @@ namespace OnTheFly.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        private readonly CompanyService _companyService;
+        /*private readonly CompanyService _companyService;
 
         public CompanyController()
         {
@@ -24,11 +24,11 @@ namespace OnTheFly.Controllers
             return await _companyService.GetCompany();
         }
 
-        /*[HttpGet("{CNPJ}", Name = "Get Company By CNPJ")]
+        [HttpGet("{CNPJ}", Name = "Get Company By CNPJ")]
         public async Task<Company> GetCompanyByCNPJ(string CNPJ)
         {
             return await _companyService.GetCompanyByCNPJ(CNPJ);
-        }*/
+        }
 
 
         [HttpPost(Name = "Create Company")]
@@ -53,6 +53,6 @@ namespace OnTheFly.Controllers
         public async Task<Company> UpdateStatus(string CNPJ, Company company)
         {
             return await _companyService.UpdateStatus(CNPJ, company);
-        }
+        }*/
     }
 }
