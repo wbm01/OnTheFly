@@ -4,6 +4,7 @@ using Models;
 using Models.DTO;
 using OnTheFly.AirCraftServices.config;
 using OnTheFly.AirCraftServices.Services;
+using OnTheFly.FlightsService.DTOs;
 
 namespace OnTheFly.AirCraftServices.Controllers
 {
@@ -18,31 +19,31 @@ namespace OnTheFly.AirCraftServices.Controllers
             _airCraftService = service;
         }
 
-        [HttpGet(Name = "Get AirCrafts")]
+        [HttpGet(Name = "GetAirCrafts")]
         public List<AirCraft> GetAirCrafts()
         {
             return _airCraftService.GetAirCrafts();
         }
 
-        [HttpGet("{RAB}", Name = "Get AirCraft By RAB")]
+        [HttpGet("{RAB:length(6)}", Name = "GetAirCraftByRAB")]
         public ActionResult<AirCraft> GetAirCraftByRAB(string RAB)
         {
             return _airCraftService.GetAirCraftByRAB(RAB);
         }
 
-        [HttpPost(Name = "Create AirCraft")]
+        [HttpPost(Name = "CreateAirCraft")]
         public Task<ActionResult<AirCraft>> CreateAirCraft(CreateAirCraftDTO airCraftDTO)
         {
             return _airCraftService.CreateAirCraft(airCraftDTO);
         }
 
-        [HttpPut("{RAB}", Name = "Update AirCraft")]
-        public ActionResult<AirCraft> UpdateAirCraft(string RAB, [FromBody]string DtLastFlight)
+        [HttpPut("{RAB:length(6)}", Name = "UpdateAirCraft")]
+        public ActionResult<AirCraft> UpdateAirCraft(string RAB, UpdateAirCraftDTO airCraftDTO)
         {
-            return _airCraftService.UpdateAirCraft(RAB, DtLastFlight);
+            return _airCraftService.UpdateAirCraft(RAB, airCraftDTO);
         }
 
-        [HttpDelete("{RAB}", Name = "Delete AirCraft")]
+        [HttpDelete("{RAB:length(6)}", Name = "DeleteAirCraft")]
         public ActionResult DeleteAirCraft(string RAB)
         {
             _airCraftService.Delete(RAB);
