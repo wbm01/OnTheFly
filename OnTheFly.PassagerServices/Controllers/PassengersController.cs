@@ -28,7 +28,7 @@ namespace OnTheFly.PassengerServices.Controllers
         }
 
         [HttpGet("Get Restrit Passenger")]
-        public ActionResult<List<Passenger>> GetRestritPassenger() => _passengerService.GetRestritPassenger();
+        public ActionResult<Passenger> GetRestritPassengerByCPF(string CPF) => _passengerService.GetRestritPassengerByCPF(CPF);
 
         [HttpPost]
         public ActionResult<Passenger> PostPassenger(CreatePassengerDTO passenger)

@@ -33,7 +33,7 @@ namespace OnTheFly.SalesServices.Repositories
             var filter = CreateFilter(iata, rab, departure);
 
             return _saleRepository.Find(filter).FirstOrDefault();
-        }       
+        }                 
 
         public ActionResult<Sale> PostSale(Sale sale)
         {
