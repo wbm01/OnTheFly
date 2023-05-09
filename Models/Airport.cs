@@ -14,10 +14,10 @@ namespace Models
     [JsonObject(MemberSerialization.OptIn)]
     public class Airport
     {
-        //[BsonId]
-        //[JsonPropertyName("_id")]
-        //[BsonRepresentation(BsonType.ObjectId)]
-        //public string id { get; set; }
+        [BsonId]
+        [JsonPropertyName("_id")]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
 
         [JsonPropertyName("iata")]
         [BsonRepresentation(BsonType.String)]
