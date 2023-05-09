@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Models.DTO;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -18,5 +19,18 @@ namespace Models
         public DateTime DtOpen { get; set; }
         public bool? Status { get; set; }
         public Address Address { get; set; }
+
+        public Company(CompanyDTO dto)
+        {
+            this.NameOpt = dto.NameOpt;
+            this.Status = dto.Status;
+            this.Address.ZipCode = dto.ZipCode;
+            this.Address.Number = dto.Number;
+        }
+
+        public Company()
+        {
+
+        }
     }
 }

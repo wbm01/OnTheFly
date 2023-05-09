@@ -26,13 +26,22 @@ namespace OnTheFly.PassengerServices.Controllers
         {
             return _passengerService.GetPassengerByCPF(CPF);
         }
+
+        [HttpGet("Get Restrit Passenger")]
+        public ActionResult<List<Passenger>> GetRestritPassenger() => _passengerService.GetRestritPassenger();
+
         [HttpPost]
         public ActionResult<Passenger> PostPassenger(CreatePassengerDTO passenger)
         {
             return _passengerService.PostPassenger(passenger);
         }
+        [HttpPost("{CPF}")]
+        public ActionResult<Passenger> UpdateStatus(string CPF)
+        {
+            return _passengerService.UpdateStatus(CPF);
+        }
         [HttpPut]
-        public ActionResult<Passenger> UpdatePassenger(Passenger passenger, string CPF)
+        public ActionResult<Passenger> UpdatePassenger(string CPF, UpdatePassengerDTO passenger)
         {
             return _passengerService.UpdatePassenger(passenger, CPF);
         }

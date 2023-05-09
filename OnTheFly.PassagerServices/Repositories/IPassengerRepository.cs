@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 
 namespace OnTheFly.PassengerServices.Repositories
 {
@@ -12,5 +13,11 @@ namespace OnTheFly.PassengerServices.Repositories
         Passenger UpdatePassenger(Passenger passenger, string CPF);
 
         ActionResult<Passenger> DeletePassenger(string CPF);
+
+        Passenger NoRestritPassenger(string CPF);
+
+        Passenger RestritPassenger(string CPF);
+
+        List<Passenger> GetRestritPassenger();
     }
 }

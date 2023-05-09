@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using Services;
 
 namespace OnTheFly.Controllers
@@ -9,7 +10,7 @@ namespace OnTheFly.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        private readonly CompanyService _companyService;
+        /*private readonly CompanyService _companyService;
 
         public CompanyController()
         {
@@ -23,11 +24,11 @@ namespace OnTheFly.Controllers
             return await _companyService.GetCompany();
         }
 
-        /*[HttpGet("{CNPJ}", Name = "Get Company By CNPJ")]
+        [HttpGet("{CNPJ}", Name = "Get Company By CNPJ")]
         public async Task<Company> GetCompanyByCNPJ(string CNPJ)
         {
             return await _companyService.GetCompanyByCNPJ(CNPJ);
-        }*/
+        }
 
 
         [HttpPost(Name = "Create Company")]
@@ -43,9 +44,15 @@ namespace OnTheFly.Controllers
         }
 
         [HttpPut("{CNPJ}", Name = "Update Company")]
-        public async Task<Company> UpdateCompany(string CNPJ, Company company)
+        public async Task<CompanyDTO> UpdateCompany(string CNPJ, Company company)
         {
             return await _companyService.UpdateCompany(CNPJ, company);
         }
+
+        [HttpPut("{CNPJ}", Name = "Update Status")]
+        public async Task<Company> UpdateStatus(string CNPJ, Company company)
+        {
+            return await _companyService.UpdateStatus(CNPJ, company);
+        }*/
     }
 }

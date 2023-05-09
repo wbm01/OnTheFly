@@ -12,10 +12,14 @@ namespace Services
             try
             {
                 HttpResponseMessage response = await PostOfficeService.street.GetAsync("https://viacep.com.br/ws/" + zipCode + "/json/");
-                response.EnsureSuccessStatusCode();
-                string ender = await response.Content.ReadAsStringAsync();
-                var end = JsonConvert.DeserializeObject<AddressDTO>(ender);
-                return end;
+                if (response.IsSuccessStatusCode)
+                {
+                    response.EnsureSuccessStatusCode();
+                    string ender = await response.Content.ReadAsStringAsync();
+                    var end = JsonConvert.DeserializeObject<AddressDTO>(ender);
+                    return end;
+                }
+                return null;
             }
             catch (HttpRequestException e)
             {
