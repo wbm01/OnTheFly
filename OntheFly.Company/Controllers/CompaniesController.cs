@@ -27,7 +27,7 @@ namespace OnTheFly.CompanyServices.Controllers
 
         [HttpPost]
         public ActionResult<Company> PostCompany(Company company) => _companiesService.PostCompany(company);
-        /*
+        
         [HttpPut]
         public ActionResult<Company> UpdateCompany(string CNPJ, CompanyDTO company) => _companiesService.UpdateCompany(CNPJ, company);
 
