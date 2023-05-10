@@ -18,7 +18,7 @@ namespace OnTheFly.SalesServices.Repositories
         {
             var client = new MongoClient(config.ConnectionString);
             var database = client.GetDatabase(config.DatabaseName);
-            _saleRepository = database.GetCollection<Sale>(config.SalesCollectionName);
+            _saleRepository = database.GetCollection<Sale>(config.SalesSoldCollectionName);
             _saleClient = new HttpClient();
             _producerSaleSoldHost = "https://localhost:5007/api/SalesSold";
             _producerSaleReservedHost = "https://localhost:5007/api/SalesReserved";
@@ -44,14 +44,14 @@ namespace OnTheFly.SalesServices.Repositories
         {
             if (sale.Sold == true)
             {
-                HttpResponseMessage response = await _saleClient.PostAsJsonAsync("https://localhost:5007/api/SalesSold", sale);
+                HttpResponseMessage response = await _saleClient.PostAsJsonAsync(_producerSaleSoldHost, sale);
                 response.EnsureSuccessStatusCode();
                 return new StatusCodeResult(200);
             }
 
             else
             {
-                HttpResponseMessage response = await _saleClient.PostAsJsonAsync("https://localhost:5007/api/SalesReserved", sale);
+                HttpResponseMessage response = await _saleClient.PostAsJsonAsync(_producerSaleReservedHost, sale);
                 response.EnsureSuccessStatusCode();
                 return new StatusCodeResult(200);
             }
