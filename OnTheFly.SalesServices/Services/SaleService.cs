@@ -37,6 +37,11 @@ namespace OnTheFly.SalesServices.Services
             string flightStr = await flightResponse.Content.ReadAsStringAsync();
             Flight flight = JsonConvert.DeserializeObject<Flight>(flightStr);
 
+            if(flight.Status == true)
+            {
+                return new UnauthorizedObjectResult("Esse vôo foi cancelado");
+            }
+
             List<Passenger> passengerlist = new();
 
             foreach (var cpf in saleDTO.passengersCPFlist)
@@ -54,6 +59,7 @@ namespace OnTheFly.SalesServices.Services
                 Passenger newpassenger = JsonConvert.DeserializeObject<Passenger>(passengerStr);
                 passengerlist.Add(newpassenger);
             }
+            if (VerifyInactivePassenger(passengerlist)) return new UnauthorizedObjectResult("Um passageiro inativo não pode efetuar uma compra/reserva de passagem");
 
             flight.Sale -= passengerlist.Count();
             if (flight.Sale < 0)
@@ -101,6 +107,15 @@ namespace OnTheFly.SalesServices.Services
             //}); 
 
             return _saleRepository.PostSale(sale);
+        }
+
+        private bool VerifyInactivePassenger(List<Passenger> passengerlist)
+        {
+            foreach(var passenger in passengerlist) 
+            {
+                if(passenger.Status == true) return true;
+            }
+            return false;
         }
 
         public Sale UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO) => _saleRepository.UpdateSale(iata, rab, departure, saleDTO);
