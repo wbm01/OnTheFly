@@ -26,7 +26,7 @@ namespace OnTheFly.Services
             }
         }
 
-        public async Task<List<Passenger>> GetRestritPassenger()
+        public async Task<List<Passenger>> GetRestrictPassenger()
         {
             try
             {
@@ -57,7 +57,7 @@ namespace OnTheFly.Services
             }
         }
 
-        public async Task<Passenger> GetRestritPassengerByCPF(string CPF)
+        public async Task<Passenger> GetRestrictPassengerByCPF(string CPF)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace OnTheFly.Services
             }
         }
 
-        public async Task<Passenger> CreatePassenger(CreatePassengerDTO passenger)
+        public async Task<Passenger> PostPassenger(CreatePassengerDTO passenger)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace OnTheFly.Services
             }
         }
 
-        public async Task<Passenger> UpdatePassenger(string CPF, Passenger passenger)
+        public async Task<Passenger> PutPassenger(string CPF, Passenger passenger)
         {
             try
             {

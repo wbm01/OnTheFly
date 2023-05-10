@@ -18,7 +18,7 @@ namespace OnTheFly.Controllers
         }
 
 
-        [HttpGet(Name = "Get Airports")]
+        [HttpGet(Name = "GetAirports")]
         public async Task<List<AirportDTO>> GetAirports()
         {
             List<Airport> airports = await _airportService.GetAirports();
@@ -34,7 +34,7 @@ namespace OnTheFly.Controllers
             return airportDTOs;
         }
 
-        [HttpGet("{IATA}", Name = "Get Airport By IATA")]
+        [HttpGet("{IATA}", Name = "GetAirportByIATA")]
         public async Task<AirportDTO> GetAirportByIATA(string IATA)
         {
             Airport airport = _airportService.GetAirportByIATA(IATA).Result;

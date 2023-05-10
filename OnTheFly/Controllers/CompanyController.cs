@@ -32,9 +32,9 @@ namespace OnTheFly.Controllers
 
 
         [HttpPost(Name = "CreateCompany")]
-        public async Task<Company> CreateCompany(Company company)
+        public async Task<Company> PostCompany(Company company)
         {
-            return await _companyService.CreateCompany(company);
+            return await _companyService.PostCompany(company);
         }
 
         [HttpDelete("{CNPJ}", Name = "DeleteCompany")]
@@ -44,9 +44,9 @@ namespace OnTheFly.Controllers
         }
 
         [HttpPut("{CNPJ}", Name = "UpdateCompany")]
-        public async Task<Company> UpdateCompany(string CNPJ, CompanyDTO company)
+        public async Task<Company> PutCompany(string CNPJ, CompanyDTO company)
         {
-            return await _companyService.UpdateCompany(CNPJ, company);
+            return await _companyService.PutCompany(CNPJ, company);
         }
 
         [HttpPut("restrict/{CNPJ}", Name = "UpdateStatusCompany")]

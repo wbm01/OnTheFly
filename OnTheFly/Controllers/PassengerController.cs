@@ -25,7 +25,7 @@ namespace OnTheFly.Controllers
         }
 
         [HttpGet("{CPF}", Name = "GetPassenger")]
-        public async Task<Passenger> GetPassengerCPF(string CPF)
+        public async Task<Passenger> GetPassengerByCPF(string CPF)
         {
             return await _passenger.GetPassengerByCPF(CPF);
         }
@@ -33,7 +33,7 @@ namespace OnTheFly.Controllers
         [HttpGet("restricts", Name = "GetRestritPassenger")]
         public async Task<List<Passenger>> GetRestrictPassenger()
         {
-            return await _passenger.GetRestritPassenger();
+            return await _passenger.GetRestrictPassenger();
         }
 
         [HttpDelete("{CPF}", Name = "DeletePassenger")]
@@ -45,13 +45,13 @@ namespace OnTheFly.Controllers
         [HttpPost(Name = "PostName")]
         public async Task<Passenger> PostPassenger(CreatePassengerDTO passenger)
         {
-            return await _passenger.CreatePassenger(passenger);
+            return await _passenger.PostPassenger(passenger);
         }
 
         [HttpPut("{CPF}", Name = "PutName")]
         public async void PutPassenger(string CPF, Passenger passenger)
         {
-            await _passenger.UpdatePassenger(CPF, passenger);
+            await _passenger.PutPassenger(CPF, passenger);
         }
 
         /*[HttpPatch("restrict/{CPF}", Name = "UpdateStatus")]
@@ -69,7 +69,7 @@ namespace OnTheFly.Controllers
         [HttpGet("restrict/{cpf}", Name = "GetRestritPassengerByCPF")]
         public async Task<Passenger> GetRestrictPassengerByCPF(string cpf)
         {
-            return await _passenger.GetRestritPassengerByCPF(cpf);
+            return await _passenger.GetRestrictPassengerByCPF(cpf);
         }
     }
 }

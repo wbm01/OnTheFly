@@ -45,7 +45,7 @@ namespace Services
             }
         }
 
-        public async Task<Company> CreateCompany(Company company)
+        public async Task<Company> PostCompany(Company company)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Services
             }
         }
 
-        public async Task<Company> UpdateCompany(string CNPJ, CompanyDTO company)
+        public async Task<Company> PutCompany(string CNPJ, CompanyDTO company)
         {
             try
             {
