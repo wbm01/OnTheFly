@@ -11,6 +11,8 @@ namespace Models.DTO
         public string Iata { get; set; }
         public string Rab { get; set; }
         public string Departure { get; set; }
+        public bool Sold { get; set; }
+        public bool Reserved { get; set; }
         public List<string> passengersCPFlist { get; set; }
     }
 }
