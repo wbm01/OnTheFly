@@ -17,12 +17,16 @@ namespace OnTheFly.SalesServices.Services
         private readonly HttpClient _saleClient;
         private readonly string _flightHost;
         private readonly string _passengerHost;
+        private readonly string _producerSaleSold;
+        private readonly string _producerSaleReserved;
 
         public SaleService(SaleRepository saleRepository)
         {
             _saleRepository = saleRepository;
-            _flightHost = "https://localhost:7076/api/Flights/";
-            _passengerHost = "https://localhost:7240/api/Passengers/";
+            _flightHost = "https://localhost:5004/api/Flights/";
+            _passengerHost = "https://localhost:5005/api/Passengers/";
+            _producerSaleSold = "https://localhost:5007/api/SalesSold";
+            _producerSaleReserved = "https://localhost:5007/api/SalesReserved";
             _saleClient = new();
         }
 
@@ -98,7 +102,7 @@ namespace OnTheFly.SalesServices.Services
             //            passenger.CPF = p.CPF;
             //        });
             //    });
-            //}); 
+            //});
 
             return _saleRepository.PostSale(sale);
         }
