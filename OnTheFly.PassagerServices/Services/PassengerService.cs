@@ -19,6 +19,9 @@ namespace OnTheFly.PassengerServices.Services
             if (!validateCPF(CPF))
                return new BadRequestObjectResult("CPF inválido !");
 
+            CPF = CPF.Replace("-", "");
+            CPF = CPF.Replace(".", "");
+
             return _passengerRepository.DeletePassenger(CPF);
         }
         public List<Passenger> GetPassenger()
@@ -108,6 +111,9 @@ namespace OnTheFly.PassengerServices.Services
             if (!validateCPF(CPF))
                 return new BadRequestObjectResult("CPF inválido !");
 
+            CPF = CPF.Replace("-", "");
+            CPF = CPF.Replace(".", "");
+
             var auxiliaryPassenger = _passengerRepository.GetPassengerByCPF(CPF);
             auxiliaryPassenger.Name = passenger.Name;
             auxiliaryPassenger.Gender = passenger.Gender;
@@ -133,6 +139,9 @@ namespace OnTheFly.PassengerServices.Services
         }
         public ActionResult<Passenger> UpdateStatus(string CPF)
         {
+            CPF = CPF.Replace("-", "");
+            CPF = CPF.Replace(".", "");
+
             var resultNoRestrit = _passengerRepository.GetPassengerByCPF(CPF);
             var resultRestrit = _passengerRepository.GetRestritPassenger();
             Passenger restritPassenger = new Passenger();
