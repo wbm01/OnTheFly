@@ -19,10 +19,10 @@ namespace OnTheFly.CompanyServices.Controllers
         [HttpGet("GetListCompany")]
         public ActionResult<List<Company>> GetCompany() => _companiesService.GetCompany();
 
-        [HttpGet("{CNPJ}", Name = "Get Company By CNPJ")]
+        [HttpGet("{CNPJ}", Name = "GetCompanyByCNPJ")]
         public ActionResult<Company> GetCompanyByCNPJ(string CNPJ) => _companiesService.GetCompanyByCNPJ(CNPJ);
 
-        [HttpGet("Get Restrit Company")]
+        [HttpGet("GetRestritCompany")]
         public ActionResult<List<Company>> GetRestritCompany() => _companiesService.GetRestritCompany();
 
         [HttpPost]
@@ -34,7 +34,7 @@ namespace OnTheFly.CompanyServices.Controllers
         [HttpDelete]
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companiesService.DeleteCompany(CNPJ);
 
-        [HttpPut("{CNPJ}", Name = "Update Status")]
+        [HttpPut("{CNPJ}", Name = "UpdateStatus")]
         public ActionResult<Company> UpdateStatus(string CNPJ)
         {
             return _companiesService.UpdateStatus(CNPJ);
