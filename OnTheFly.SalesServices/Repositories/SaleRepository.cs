@@ -19,7 +19,7 @@ namespace OnTheFly.SalesServices.Repositories
             var client = new MongoClient(config.ConnectionString);
             var database = client.GetDatabase(config.DatabaseName);
             _saleRepository = database.GetCollection<Sale>(config.SalesCollectionName);
-            _saleClient = new();
+            _saleClient = new HttpClient();
             _producerSaleSoldHost = "https://localhost:5007/api/SalesSold";
             _producerSaleReservedHost = "https://localhost:5007/api/SalesReserved";
         }
@@ -38,7 +38,7 @@ namespace OnTheFly.SalesServices.Repositories
             var filter = CreateFilter(iata, rab, departure);
 
             return _saleRepository.Find(filter).FirstOrDefault();
-        }                 
+        }
 
         public async Task<ActionResult<Sale>> PostSale(Sale sale)
         {
@@ -48,21 +48,21 @@ namespace OnTheFly.SalesServices.Repositories
                 response.EnsureSuccessStatusCode();
                 return new StatusCodeResult(200);
             }
-            
+
             else
             {
                 HttpResponseMessage response = await _saleClient.PostAsJsonAsync("https://localhost:5007/api/SalesReserved", sale);
                 response.EnsureSuccessStatusCode();
                 return new StatusCodeResult(200);
             }
-            
+
         }
 
         public Sale UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO)
         {
             var filter = CreateFilter(iata, rab, departure);
 
-            Sale sale = _saleRepository.Find(filter).FirstOrDefault(); 
+            Sale sale = _saleRepository.Find(filter).FirstOrDefault();
 
             sale.Sold = saleDTO.Sold;
             sale.Reserved = saleDTO.Reserved;

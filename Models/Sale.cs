@@ -13,7 +13,7 @@ namespace Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string  id { get; set; }
+        public string?  id { get; set; }
         public Flight Flight { get; set; }
         public List<Passenger> Passenger { get; set; }
         public bool Reserved { get; set; }

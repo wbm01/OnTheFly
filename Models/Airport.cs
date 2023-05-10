@@ -39,7 +39,7 @@ namespace Models
         [JsonPropertyName("city")]
         public string city { get; set; }
         [JsonPropertyName("state")]
-        public string state { get; set; }
+        public string? state { get; set; }
 
         public Airport(AirportDTO airportDTO)
         {
