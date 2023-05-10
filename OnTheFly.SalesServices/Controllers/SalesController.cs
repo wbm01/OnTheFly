@@ -24,7 +24,7 @@ namespace OnTheFly.SalesServices.Controllers
         public ActionResult<Sale> GetSaleByFlight(string iata, string rab, DateTime departure) => _saleService.GetSaleByFlight(iata, rab, departure);
 
         [HttpPost]
-        public Task<ActionResult<Sale>> PostSale(Sale sale) => _saleService.PostSale(sale);
+        public Task<ActionResult<Sale>> PostSale(CreateSaleDTO saleDTO) => _saleService.PostSale(saleDTO);
 
         [HttpPut("{iata}, {rab}, {departure}")]
         public ActionResult<Sale> UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO) => _saleService.UpdateSale(iata, rab, departure, saleDTO);

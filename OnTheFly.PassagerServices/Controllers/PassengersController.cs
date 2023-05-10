@@ -16,26 +16,31 @@ namespace OnTheFly.PassengerServices.Controllers
         {
             _passengerService = new PassengerService();
         }
-        [HttpGet]
+
+        [HttpGet(Name = "GetAllPassengers")]
         public ActionResult<List<Passenger>> GetPassenger()
         {
             return _passengerService.GetPassenger();
         }
-        [HttpGet("{CPF}")]
-        public ActionResult<Passenger> GetPassengerByCPF(string CPF)
+        //[HttpGet("{CPF}", Name = "GetPassengerByCPF")]
+        //public ActionResult<Passenger> GetPassengerByCPF(string CPF)
+        //{
+        //    return _passengerService.GetPassengerByCPF(CPF);
+        //}
+
+        [HttpGet("{CPF}", Name = "GetRestrictPassenger")]
+        public ActionResult<Passenger> GetRestritPassengerByCPF(string CPF, bool restrict)
         {
+            if(restrict) return _passengerService.GetRestritPassengerByCPF(CPF);
             return _passengerService.GetPassengerByCPF(CPF);
         }
 
-        [HttpGet("Get Restrit Passenger")]
-        public ActionResult<Passenger> GetRestritPassengerByCPF(string CPF) => _passengerService.GetRestritPassengerByCPF(CPF);
-
-        [HttpPost]
+        [HttpPost(Name = "PostPassenger")]
         public ActionResult<Passenger> PostPassenger(CreatePassengerDTO passenger)
         {
             return _passengerService.PostPassenger(passenger);
         }
-        [HttpPost("{CPF}")]
+        [HttpPost("{CPF}", Name = "UpdatePassengerAsRestrict")]
         public ActionResult<Passenger> UpdateStatus(string CPF)
         {
             return _passengerService.UpdateStatus(CPF);

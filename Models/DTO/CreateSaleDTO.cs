@@ -8,9 +8,9 @@ namespace Models.DTO
 {
     public class CreateSaleDTO
     {
-        public string iata;
-        public string rab;
-        public string departure;
-        public List<string> passengersCPFlist;
+        public string Iata { get; set; }
+        public string Rab { get; set; }
+        public string Departure { get; set; }
+        public List<string> passengersCPFlist { get; set; }
     }
 }

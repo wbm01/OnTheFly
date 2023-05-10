@@ -6,6 +6,7 @@ using MongoDB.Driver;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Globalization;
+using System.Net;
 
 namespace OnTheFly.SalesServices.Services
 {
@@ -28,78 +29,52 @@ namespace OnTheFly.SalesServices.Services
         public List<Sale> GetSale() => _saleRepository.GetSale();
 
         public Sale GetSaleByFlight(string iata, string rab, DateTime departure) => _saleRepository.GetSaleByFlight(iata, rab, departure);
-        public async Task<ActionResult<Sale>> PostSale(Sale sale)
+        public async Task<ActionResult<Sale>> PostSale(CreateSaleDTO saleDTO)
         {
-            //numero de vendas nao exceda a capacidade do aviao ****
-            //verificar se o passageiro nao esta restrito, cancelar venda de verdadeiro
+            HttpResponseMessage flightResponse = await _saleClient.GetAsync(_flightHost + saleDTO.Iata + ", " + saleDTO.Rab + "?departure=" + saleDTO.Departure);
 
-            //var date = TimeZoneInfo.ConvertTime(sale.Flight.Departure, TimeZoneInfo.FindSystemTimeZoneById(BrazilianTimeZoneId));
-            //var newdate = ParseDate(date);
-            //var dateurl = newdate.ToString();
-            //date = date.Replace("/", "%2F");
-            //dateurl = dateurl.Replace(" ", "%20");
-            //dateurl = dateurl.Replace(":", "%3A");
-            //HttpResponseMessage flightResponse = await _saleClient.GetAsync(_flightHost + saleDTO.iata + ", "+ saleDTO.rab + "?departure=" + date);
-            HttpResponseMessage flightResponse = await _saleClient.GetAsync(_flightHost + sale.Flight.Destiny.iata + ", " + sale.Flight.Plane.RAB + "?departure=" + "20/04/2023 13:40");
-            
             flightResponse.EnsureSuccessStatusCode();
             string flightStr = await flightResponse.Content.ReadAsStringAsync();
-            sale.Flight = JsonConvert.DeserializeObject<Flight>(flightStr);
+            Flight flight = JsonConvert.DeserializeObject<Flight>(flightStr);
 
             List<Passenger> passengerlist = new();
 
-            foreach (var cpf in sale.Passenger)
+            foreach (var cpf in saleDTO.passengersCPFlist)
             {
-                if (cpf == null)
-                {
-                    return new BadRequestResult();
-                }
-                else
-                {
-                    HttpResponseMessage passengerResponse = await _saleClient.GetAsync(_passengerHost + cpf.CPF);
-                    passengerResponse.EnsureSuccessStatusCode();
+                HttpResponseMessage passengerResponse = await _saleClient.GetAsync(_passengerHost + cpf);
+                passengerResponse.EnsureSuccessStatusCode();
 
-                    string passengerStr = await passengerResponse.Content.ReadAsStringAsync();
-                    Passenger newpassenger = JsonConvert.DeserializeObject<Passenger>(passengerStr);
-                    passengerlist.Add(newpassenger);
+                if (passengerResponse.Content.Headers.ContentLength == 0)
+                {
+                    if (!VerifyPassenger(cpf).Result) return new NotFoundObjectResult("CPF não encontrado");
+                    return new UnauthorizedObjectResult("Passageiro está restrito e não pode comprar uma passagem");
                 }
+
+                string passengerStr = await passengerResponse.Content.ReadAsStringAsync();
+                Passenger newpassenger = JsonConvert.DeserializeObject<Passenger>(passengerStr);
+                passengerlist.Add(newpassenger);
             }
 
-            sale.Passenger = passengerlist;
-            //Sale sale = new Sale()
-            //{
-            //    Flight = flight,
-            //    Passenger = passengerlist,
-            //    Reserved = false,
-            //    Sold = false
-            //};
-
-            List<Sale> salelist = _saleRepository.GetSale();
-            List<Sale> sales = new();
-
-            foreach (var newsales in salelist)
+            flight.Sale -= passengerlist.Count();
+            if (flight.Sale < 0)
             {
-                if(newsales.Flight.Destiny.iata == sale.Flight.Destiny.iata && newsales.Flight.Plane.RAB == sale.Flight.Plane.RAB && DateTime.Compare(newsales.Flight.Departure, sale.Flight.Departure) == 0)
-                {
-                    sales.Add(newsales);
-                }
+                return new BadRequestObjectResult("Assentos esgotados");
             }
 
-            //_saleRepository.GetSaleByFlights(sale.Flight.Destiny.iata, sale.Flight.Plane.RAB, sale.Flight.Departure);
-
-            //if (sales.Count() == sale.Flight.Plane.Capacity)
-            //{
-            //    return new ForbidResult("Limite de assentos foi atingido");
-            //}
-            //sale.Flight.Sale -= sale.Passenger.Count();
-
-            int idade = CalcularIdade(sale.Passenger[0]);
-            if (idade < 18)
+            Sale sale = new Sale()
             {
-                return new BadRequestObjectResult("Passageiro menor de 18 anos");
-            }
+                Flight = flight,
+                Passenger = passengerlist,
+                Reserved = false,
+                Sold = false
+            };
 
-            foreach (var sale1 in sales)
+            if (AgeCalculate(sale.Passenger[0])) return new BadRequestObjectResult("Passageiro menor de 18 anos");
+
+            List<Sale> allsales = _saleRepository.GetSale();
+            List<Sale> salesflight = allsales.FindAll(s => s.Flight._id == sale.Flight._id).ToList();
+
+            foreach (var sale1 in salesflight)
             {
                 foreach (var passenger in sale1.Passenger)
                 {
@@ -113,26 +88,44 @@ namespace OnTheFly.SalesServices.Services
                 }
             }
 
+            //bool test = false;
+            //salesflight.ForEach(s =>
+            //{
+            //    s.Passenger.ForEach(p =>
+            //    {
+            //        test = sale.Passenger.Any(passenger =>
+            //        {
+            //            passenger.CPF = p.CPF;
+            //        });
+            //    });
+            //}); 
+
             return _saleRepository.PostSale(sale);
         }
 
         public Sale UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO) => _saleRepository.UpdateSale(iata, rab, departure, saleDTO);
         public ActionResult<Sale> DeleteSale(string iata, string rab, DateTime departure) => _saleRepository.DeleteSale(iata, rab, departure);
 
-        public static int CalcularIdade(Passenger passenger)
+        public static bool AgeCalculate(Passenger passenger)
         {
             int idade = DateTime.Now.Year - passenger.DtBirth.Year;
             if (DateTime.Now.DayOfYear < passenger.DtBirth.DayOfYear)
             {
                 idade = idade - 1;
             }
-            return idade;
+            if (idade < 18) return true;
+
+            return false;
         }
-        private static DateTime ParseDate(string date)
+
+        public async Task<bool> VerifyPassenger(string CPF)
         {
-            var dateTimeB = date;
-            var format = "dd/MM/yyyy HH:mm";
-            return DateTime.ParseExact(dateTimeB, format, CultureInfo.InvariantCulture);
+            HttpResponseMessage passengerResponse = await _saleClient.GetAsync(_passengerHost + CPF + "?restrict=true");
+            passengerResponse.EnsureSuccessStatusCode();
+
+            if (passengerResponse.Content.Headers.ContentLength == 0) return false;
+
+            return true;
         }
     }
 }
