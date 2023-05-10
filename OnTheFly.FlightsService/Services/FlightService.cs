@@ -17,12 +17,14 @@ namespace OnTheFly.FlightsService.Services
         private readonly HttpClient _flightstClient;
         private readonly string _airCraftHost;
         private readonly string _airportHost;
+        private readonly string _companyHost;
 
         public FlightService(FlightsRepository repository)
         {
             _flightsRepository = repository;
             _airCraftHost = "https://localhost:7250/api/AirCraft/";
             _airportHost = "https://localhost:7206/api/Airport/";
+            _companyHost = "https://localhost:7226/api/Companies/GetRestritCompany";
             _flightstClient = new();
         }
 
@@ -73,32 +75,69 @@ namespace OnTheFly.FlightsService.Services
                 return new BadRequestObjectResult("RAB ou IATA inválidos");
             }
 
+            AirCraft plane = new();
             // Get AirCraft
-            HttpResponseMessage airCraftResponse = await _flightstClient.GetAsync(_airCraftHost + flightDTO.RAB.ToUpper());
-            airCraftResponse.EnsureSuccessStatusCode();
+            try
+            {
+                HttpResponseMessage airCraftResponse = await _flightstClient.GetAsync(_airCraftHost + flightDTO.RAB.ToUpper());
+                //airCraftResponse.EnsureSuccessStatusCode();
 
-            string airCraftStr = await airCraftResponse.Content.ReadAsStringAsync();
-            AirCraft plane = JsonConvert.DeserializeObject<AirCraft>(airCraftStr);
+                string airCraftStr = await airCraftResponse.Content.ReadAsStringAsync();
+                plane = JsonConvert.DeserializeObject<AirCraft>(airCraftStr);
+            }
+            catch
+            {
+                return new BadRequestObjectResult("Aeronave não encontrada!");
+            }
 
+            Airport airport = new();
             // Get Airport
-            HttpResponseMessage airportResponse = await _flightstClient.GetAsync(_airportHost + flightDTO.IATA.ToUpper());
-            airportResponse.EnsureSuccessStatusCode();
+            try
+            {
+                HttpResponseMessage airportResponse = await _flightstClient.GetAsync(_airportHost + flightDTO.IATA.ToUpper());
+                airportResponse.EnsureSuccessStatusCode();
 
-            string airportStr = await airportResponse.Content.ReadAsStringAsync();
-            Airport airport = BsonSerializer.Deserialize<Airport>(airportStr);
+                string airportStr = await airportResponse.Content.ReadAsStringAsync();
+                airport = JsonConvert.DeserializeObject<Airport>(airportStr);
+            }
+            catch
+            {
+                return new BadRequestObjectResult("Aeroporto não encontrado!");
+            }
+
+            HttpResponseMessage companyResponse = await _flightstClient.GetAsync(_companyHost);
+            companyResponse.EnsureSuccessStatusCode();
+
+            string companyStr = await companyResponse.Content.ReadAsStringAsync();
+            List<Company> company = JsonConvert.DeserializeObject<List<Company>>(companyStr);
+
+            bool companyRestric = false;
+            
+            foreach (var comp in company)
+            {
+                if(comp.CNPJ == plane.Company.CNPJ)
+                {
+                    companyRestric = true;
+                }
+            }
+            
+            if(companyRestric == true)
+            {
+                return new UnauthorizedObjectResult("Companhia restrita!");
+            }
+
+            if(plane.Company.Status == true)
+            {
+                return new UnauthorizedObjectResult("Companhia inativa!");
+            }
 
             var date = ParseDate(flightDTO.Departure);
 
             var flightExist = GetFlight(flightDTO.IATA, flightDTO.RAB, flightDTO.Departure);
 
-            if(flightExist != null)
+            if(flightExist.Value != null)
             {
                 return new BadRequestObjectResult("Esse Voo já existe!");
-            }
-
-            if (plane.Company.Status == true)
-            {
-                return new StatusCodeResult(401);
             }
 
             Flight flight = new()
