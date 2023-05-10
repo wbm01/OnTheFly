@@ -1,6 +1,7 @@
 ﻿using Models.DTO;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Models
 {
@@ -9,6 +10,7 @@ namespace Models
         [BsonId]
         public string CPF { get; set; }
         public string Name { get; set; }
+        [SwaggerSchema(Format = "byte")]
         public char Gender { get; set; }
         public string? Phone { get; set; }
         public DateTime DtBirth { get; set; }
@@ -18,9 +20,18 @@ namespace Models
 
         public Passenger(CreatePassengerDTO passengerDTO)
         {
+            if (passengerDTO.Gender[0] == 'M' || passengerDTO.Gender[0] == 'm')
+            {
+                Gender = 'M';
+            }
+            else
+            {
+                Gender = 'F';
+
+            }
+
             CPF = passengerDTO.CPF; 
             Name = passengerDTO.Name;
-            Gender = passengerDTO.Gender;
             Phone = passengerDTO.Phone;
             DtRegister = DateTime.Now;
             Status = passengerDTO.Status;

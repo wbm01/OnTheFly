@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Models.DTO
 {
@@ -12,7 +13,7 @@ namespace Models.DTO
 
             public string CPF { get; set; }
             public string Name { get; set; }
-            public char Gender { get; set; }
+            public string Gender { get; set; }
             public string? Phone { get; set; }
             public string DtBirth { get; set; }
             public bool? Status { get; set; }
