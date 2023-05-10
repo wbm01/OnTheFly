@@ -13,7 +13,7 @@ namespace OnTheFly.PassengerServices.Repositories
         private readonly string _connectionString = "mongodb://localhost:27017";
         private readonly string _dataBaseName = "DBPassenger";
         private readonly string _passengerCollectionName = "Passenger";
-        private readonly string _passengerCollectionRestrictName = "PassengerRestrit";
+        private readonly string _passengerCollectionRestrictName = "PassengerRestrict";
 
         public PassengerRepository()
         {

@@ -13,7 +13,7 @@ namespace OnTheFly.CompanyServices.Repositories
         private readonly string _connectionString = "mongodb://localhost:27017";
         private readonly string _databaseName = "DBCompany";
         private readonly string _companyCollectionName = "Company";
-        private readonly string _companyCollectionRestrictName = "CompanyRestrit";
+        private readonly string _companyCollectionRestrictName = "CompanyRestrict";
 
         public CompanyRepository()
         {
