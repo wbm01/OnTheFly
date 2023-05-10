@@ -1,10 +1,19 @@
 ﻿using System.Text;
 using Models;
+using MongoDB.Driver;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-HttpClient _client = new();
+IMongoCollection<Sale> _saleRepository;
+HttpClient _saleClient;
+
+
+var client = new MongoClient("mongodb://localhost:27017");
+var database = client.GetDatabase("DBSales");
+_saleRepository = database.GetCollection<Sale>("Sales");
+
+_saleClient = new();
 const string QUEUE_NAME = "reserved";
 
 var factory = new ConnectionFactory() { HostName = "localhost" };
@@ -27,8 +36,10 @@ using (var connection = factory.CreateConnection())
             consumer.Received += (model, ea) =>
             {
                 var body = ea.Body.ToArray();
-                var returnCustomer = Encoding.UTF8.GetString(body);
-                var customer = JsonConvert.DeserializeObject<Sale>(returnCustomer);
+                var returnReserved = Encoding.UTF8.GetString(body);
+                var reserved = JsonConvert.DeserializeObject<Sale>(returnReserved);
+
+                _saleRepository.InsertOne(reserved);
             };
 
             channel.BasicConsume(
