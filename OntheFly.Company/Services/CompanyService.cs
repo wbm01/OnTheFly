@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Server.IIS;
 using Models;
 using Models.DTO;
+using MongoDB.Driver;
 using OnTheFly.CompanyServices.Repositories;
 using Services;
 
@@ -19,6 +20,7 @@ namespace OnTheFly.CompanyServices.Services
         public List<Company> GetCompany() => _companyRepository.GetCompany();
         public Company GetCompanyByCNPJ(string CNPJ) {
 
+            CNPJ = CNPJ.Trim();
             CNPJ = CNPJ.Replace("%2F", "");
             CNPJ = CNPJ.Replace("-", "");
             CNPJ = CNPJ.Replace(".", "");
@@ -36,6 +38,12 @@ namespace OnTheFly.CompanyServices.Services
             {
                 return new BadRequestResult();
             }
+
+            company.CNPJ = company.CNPJ.Trim();
+            company.CNPJ = company.CNPJ.Replace("%2F", "");
+            company.CNPJ = company.CNPJ.Replace("-", "");
+            company.CNPJ = company.CNPJ.Replace(".", "");
+            company.CNPJ = company.CNPJ.Replace("/", "");
 
             var result = _companyRepository.GetCompanyByCNPJ(company.CNPJ);
 
@@ -71,6 +79,11 @@ namespace OnTheFly.CompanyServices.Services
 
         public ActionResult<Company> UpdateCompany(string CNPJ, CompanyDTO companyDTO)
         {
+            CNPJ = CNPJ.Trim();
+            CNPJ = CNPJ.Replace("%2F", "");
+            CNPJ = CNPJ.Replace("-", "");
+            CNPJ = CNPJ.Replace(".", "");
+            CNPJ = CNPJ.Replace("/", "");
 
             var company = _companyRepository.GetCompanyByCNPJ(CNPJ);
 
@@ -103,7 +116,11 @@ namespace OnTheFly.CompanyServices.Services
 
         public ActionResult<Company> UpdateStatus(string CNPJ, Company company)
         {
-            CNPJ = CNPJ.Replace("%2F", "/");
+            CNPJ = CNPJ.Trim();
+            CNPJ = CNPJ.Replace("%2F", "");
+            CNPJ = CNPJ.Replace("-", "");
+            CNPJ = CNPJ.Replace(".", "");
+            CNPJ = CNPJ.Replace("/", "");
 
             var result = _companyRepository.GetCompanyByCNPJ(CNPJ);
             if (result != null)
@@ -116,7 +133,16 @@ namespace OnTheFly.CompanyServices.Services
             }
         }
 
-        public ActionResult<Company> DeleteCompany(string CNPJ) => _companyRepository.DeleteCompany(CNPJ);
+        public ActionResult<Company> DeleteCompany(string CNPJ)
+        {
+            CNPJ = CNPJ.Trim();
+            CNPJ = CNPJ.Replace("%2F", "");
+            CNPJ = CNPJ.Replace("-", "");
+            CNPJ = CNPJ.Replace(".", "");
+            CNPJ = CNPJ.Replace("/", "");
+
+            return _companyRepository.DeleteCompany(CNPJ);
+        }
 
         public static bool CheckCNPJ(string cnpj)
         {
