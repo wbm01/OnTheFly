@@ -17,16 +17,12 @@ namespace OnTheFly.SalesServices.Services
         private readonly HttpClient _saleClient;
         private readonly string _flightHost;
         private readonly string _passengerHost;
-        private readonly string _producerSaleSold;
-        private readonly string _producerSaleReserved;
 
         public SaleService(SaleRepository saleRepository)
         {
             _saleRepository = saleRepository;
             _flightHost = "https://localhost:5004/api/Flights/";
-            _passengerHost = "https://localhost:5005/api/Passengers/";
-            _producerSaleSold = "https://localhost:5007/api/SalesSold";
-            _producerSaleReserved = "https://localhost:5007/api/SalesReserved";
+            _passengerHost = "https://localhost:5005/api/Passengers/";            
             _saleClient = new();
         }
 
@@ -69,8 +65,8 @@ namespace OnTheFly.SalesServices.Services
             {
                 Flight = flight,
                 Passenger = passengerlist,
-                Reserved = false,
-                Sold = false
+                Reserved = saleDTO.Reserved,
+                Sold = saleDTO.Sold
             };
 
             if (AgeCalculator(sale.Passenger[0])) return new BadRequestObjectResult("Passageiro menor de 18 anos");
@@ -92,6 +88,11 @@ namespace OnTheFly.SalesServices.Services
                 }
             }
 
+            if(sale.Sold == sale.Reserved)
+            {
+                return new BadRequestObjectResult("Não foi definido se é uma compra ou uma reserva");
+            }            
+
             //bool test = false;
             //salesflight.ForEach(s =>
             //{
@@ -104,7 +105,7 @@ namespace OnTheFly.SalesServices.Services
             //    });
             //});
 
-            return _saleRepository.PostSale(sale);
+            return await _saleRepository.PostSale(sale);
         }
 
         public Sale UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO) => _saleRepository.UpdateSale(iata, rab, departure, saleDTO);

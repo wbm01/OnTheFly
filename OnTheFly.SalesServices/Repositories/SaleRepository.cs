@@ -10,13 +10,18 @@ namespace OnTheFly.SalesServices.Repositories
     public class SaleRepository : ISaleRepository
     {
         private readonly IMongoCollection<Sale> _saleRepository;
-
+        private readonly HttpClient _saleClient;
+        private readonly string _producerSaleSoldHost;
+        private readonly string _producerSaleReservedHost;
 
         public SaleRepository(IMongoDBConfig config)
         {
             var client = new MongoClient(config.ConnectionString);
             var database = client.GetDatabase(config.DatabaseName);
             _saleRepository = database.GetCollection<Sale>(config.SalesCollectionName);
+            _saleClient = new();
+            _producerSaleSoldHost = "https://localhost:5007/api/SalesSold";
+            _producerSaleReservedHost = "https://localhost:5007/api/SalesReserved";
         }
 
         public ActionResult<Sale> DeleteSale(string iata, string rab, DateTime departure)
@@ -35,10 +40,22 @@ namespace OnTheFly.SalesServices.Repositories
             return _saleRepository.Find(filter).FirstOrDefault();
         }                 
 
-        public ActionResult<Sale> PostSale(Sale sale)
+        public async Task<ActionResult<Sale>> PostSale(Sale sale)
         {
-            _saleRepository.InsertOne(sale);
-            return sale;
+            if (sale.Sold == true)
+            {
+                HttpResponseMessage response = await _saleClient.PostAsJsonAsync("https://localhost:5007/api/SalesSold", sale);
+                response.EnsureSuccessStatusCode();
+                return new StatusCodeResult(200);
+            }
+            
+            else
+            {
+                HttpResponseMessage response = await _saleClient.PostAsJsonAsync("https://localhost:5007/api/SalesReserved", sale);
+                response.EnsureSuccessStatusCode();
+                return new StatusCodeResult(200);
+            }
+            
         }
 
         public Sale UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO)
