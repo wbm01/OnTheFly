@@ -14,7 +14,7 @@ namespace OnTheFly.Services
         {
             try
             {
-                HttpResponseMessage response = await PassengerService.customerPassenger.GetAsync("https://localhost:7240/api/Passengers");
+                HttpResponseMessage response = await PassengerService.customerPassenger.GetAsync("https://localhost:5005/api/Passengers");
                 response.EnsureSuccessStatusCode();
                 string passenger = await response.Content.ReadAsStringAsync();
                 var end = JsonConvert.DeserializeObject<List<Passenger>>(passenger);
@@ -30,7 +30,7 @@ namespace OnTheFly.Services
         {
             try
             {
-                HttpResponseMessage response = await PassengerService.customerPassenger.GetAsync("https://localhost:7240/api/Passengers");
+                HttpResponseMessage response = await PassengerService.customerPassenger.GetAsync("https://localhost:5005/api/Passengers");
                 response.EnsureSuccessStatusCode();
                 string passenger = await response.Content.ReadAsStringAsync();
                 var end = JsonConvert.DeserializeObject<List<Passenger>>(passenger);
@@ -46,7 +46,7 @@ namespace OnTheFly.Services
         {
             try
             {
-                HttpResponseMessage response = await PassengerService.customerPassenger.GetAsync("https://localhost:7240/api/Passengers/" + CPF);
+                HttpResponseMessage response = await PassengerService.customerPassenger.GetAsync("https://localhost:5005/api/Passengers/" + CPF);
                 response.EnsureSuccessStatusCode();
                 string passenger = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Passenger>(passenger);
@@ -61,7 +61,7 @@ namespace OnTheFly.Services
         {
             try
             {
-                HttpResponseMessage response = await PassengerService.customerPassenger.GetAsync("https://localhost:7240/api/Passengers/" + CPF);
+                HttpResponseMessage response = await PassengerService.customerPassenger.GetAsync("https://localhost:5005/api/Passengers/" + CPF);
                 response.EnsureSuccessStatusCode();
                 string passenger = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Passenger>(passenger);
@@ -76,7 +76,7 @@ namespace OnTheFly.Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerPassenger.PostAsJsonAsync("https://localhost:7240/api/Passengers/", passenger);
+                HttpResponseMessage resposta = await customerPassenger.PostAsJsonAsync("https://localhost:5005/api/Passengers/", passenger);
                 resposta.EnsureSuccessStatusCode();
                 string passengerReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Passenger>(passengerReturn);
@@ -91,7 +91,7 @@ namespace OnTheFly.Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerPassenger.DeleteAsync("https://localhost:7240/api/Passengers/" + CPF);
+                HttpResponseMessage resposta = await customerPassenger.DeleteAsync("https://localhost:5005/api/Passengers/" + CPF);
                 resposta.EnsureSuccessStatusCode();
                 string passengerReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Passenger>(passengerReturn);
@@ -106,7 +106,7 @@ namespace OnTheFly.Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerPassenger.PutAsJsonAsync("https://localhost:7240/api/Passengers/" + CPF, passenger);
+                HttpResponseMessage resposta = await customerPassenger.PutAsJsonAsync("https://localhost:5005/api/Passengers/" + CPF, passenger);
                 resposta.EnsureSuccessStatusCode();
                 string passengerReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Passenger>(passengerReturn);
@@ -121,7 +121,7 @@ namespace OnTheFly.Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerPassenger.PutAsJsonAsync("https://localhost:7240/api/Passengers/" + CPF, passenger);
+                HttpResponseMessage resposta = await customerPassenger.PutAsJsonAsync("https://localhost:5005/api/Passengers/" + CPF, passenger);
                 resposta.EnsureSuccessStatusCode();
                 string passengerReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Passenger>(passengerReturn);

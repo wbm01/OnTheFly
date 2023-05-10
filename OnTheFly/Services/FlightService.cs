@@ -14,7 +14,7 @@ namespace OnTheFly.Services
         public FlightService()
         {
             _flightClient = new();
-            _flightHost = "https://localhost:7076/api/Flights/";
+            _flightHost = "https://localhost:5004/api/Flights/";
         }
 
         public async Task<List<Flight>> GetFlights()

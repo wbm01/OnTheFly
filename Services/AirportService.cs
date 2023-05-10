@@ -19,7 +19,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage response = await AirportService.customerAirport.GetAsync("https://localhost:7206/api/Airport");
+                HttpResponseMessage response = await AirportService.customerAirport.GetAsync("https://localhost:5002/api/Airport");
                 response.EnsureSuccessStatusCode();
                 string airport = await response.Content.ReadAsStringAsync();
                 return BsonSerializer.Deserialize<List<Airport>>(airport);
@@ -34,7 +34,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage response = await AirportService.customerAirport.GetAsync("https://localhost:7206/api/Airport/" + IATA);
+                HttpResponseMessage response = await AirportService.customerAirport.GetAsync("https://localhost:5002/api/Airport/" + IATA);
                 response.EnsureSuccessStatusCode();
                 string airport = await response.Content.ReadAsStringAsync();
                 return BsonSerializer.Deserialize<Airport>(airport);
@@ -49,7 +49,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerAirport.PostAsJsonAsync("https://localhost:7206/api/Airport", airport);
+                HttpResponseMessage resposta = await customerAirport.PostAsJsonAsync("https://localhost:5002/api/Airport", airport);
                 resposta.EnsureSuccessStatusCode();
                 string airportReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Airport>(airportReturn);
@@ -64,7 +64,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerAirport.DeleteAsync("https://localhost:7206/api/Airport/" + IATA);
+                HttpResponseMessage resposta = await customerAirport.DeleteAsync("https://localhost:5002/api/Airport/" + IATA);
                 resposta.EnsureSuccessStatusCode();
                 string airportReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Airport>(airportReturn);
@@ -79,7 +79,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerAirport.PutAsJsonAsync("https://localhost:7206/api/Airport/" + IATA, airport);
+                HttpResponseMessage resposta = await customerAirport.PutAsJsonAsync("https://localhost:5002/api/Airport/" + IATA, airport);
                 resposta.EnsureSuccessStatusCode();
                 string airportReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Airport>(airportReturn);

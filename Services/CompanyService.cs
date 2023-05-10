@@ -18,7 +18,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage response = await CompanyService.customerCompany.GetAsync("https://localhost:7226/api/Companies");
+                HttpResponseMessage response = await CompanyService.customerCompany.GetAsync("https://localhost:5001/api/Companies");
                 response.EnsureSuccessStatusCode();
                 string company = await response.Content.ReadAsStringAsync();
                 var end = JsonConvert.DeserializeObject<List<Company>>(company);
@@ -34,7 +34,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage response = await CompanyService.customerCompany.GetAsync("https://localhost:7226/api/Companies/" + CNPJ);
+                HttpResponseMessage response = await CompanyService.customerCompany.GetAsync("https://localhost:5001/api/Companies/" + CNPJ);
                 response.EnsureSuccessStatusCode();
                 string company = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Company>(company);
@@ -49,7 +49,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerCompany.PostAsJsonAsync("https://localhost:7226/api/Companies", company);
+                HttpResponseMessage resposta = await customerCompany.PostAsJsonAsync("https://localhost:5001/api/Companies", company);
                 resposta.EnsureSuccessStatusCode();
                 string companyReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Company>(companyReturn);
@@ -64,7 +64,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerCompany.DeleteAsync("https://localhost:7226/api/Companies/" + CNPJ);
+                HttpResponseMessage resposta = await customerCompany.DeleteAsync("https://localhost:5001/api/Companies/" + CNPJ);
                 resposta.EnsureSuccessStatusCode();
                 string companyReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Company>(companyReturn);
@@ -79,7 +79,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerCompany.PutAsJsonAsync("https://localhost:7226/api/Companies/" + CNPJ, company);
+                HttpResponseMessage resposta = await customerCompany.PutAsJsonAsync("https://localhost:5001/api/Companies/" + CNPJ, company);
                 resposta.EnsureSuccessStatusCode();
                 string companyReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Company>(companyReturn);
@@ -94,7 +94,7 @@ namespace Services
         {
             try
             {
-                HttpResponseMessage resposta = await customerCompany.PutAsJsonAsync("https://localhost:7226/api/Companies/" + CNPJ, company);
+                HttpResponseMessage resposta = await customerCompany.PutAsJsonAsync("https://localhost:5001/api/Companies/" + CNPJ, company);
                 resposta.EnsureSuccessStatusCode();
                 string companyReturn = await resposta.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Company>(companyReturn);

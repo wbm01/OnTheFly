@@ -14,7 +14,7 @@ namespace OnTheFly.Services
         public AirCraftService()
         {
             _airCraftClient = new();
-            _airCraftHost = "https://localhost:7250/api/AirCraft/";
+            _airCraftHost = "https://localhost:5002/api/AirCraft/";
         }
 
         public async Task<List<AirCraft>> GetAirCrafts()
