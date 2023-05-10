@@ -19,6 +19,7 @@ namespace OnTheFly.PassengerServices.Services
             if (!validateCPF(CPF))
                return new BadRequestObjectResult("CPF inválido !");
 
+            CPF = CPF.Trim();
             CPF = CPF.Replace("-", "");
             CPF = CPF.Replace(".", "");
 
@@ -47,6 +48,7 @@ namespace OnTheFly.PassengerServices.Services
             if (!validateCPF(CPF))
                 return new BadRequestObjectResult("CPF inválido !");
 
+            CPF = CPF.Trim();
             CPF = CPF.Replace("-", "");
             CPF = CPF.Replace(".", "");
 
@@ -101,6 +103,7 @@ namespace OnTheFly.PassengerServices.Services
 
             passengerComplete.DtBirth = date;
 
+            passengerComplete.CPF = passengerComplete.CPF.Trim();
             passengerComplete.CPF = passengerComplete.CPF.Replace("-", "");
             passengerComplete.CPF = passengerComplete.CPF.Replace(".", "");
 
@@ -111,6 +114,7 @@ namespace OnTheFly.PassengerServices.Services
             if (!validateCPF(CPF))
                 return new BadRequestObjectResult("CPF inválido !");
 
+            CPF = CPF.Trim();
             CPF = CPF.Replace("-", "");
             CPF = CPF.Replace(".", "");
 
@@ -139,6 +143,7 @@ namespace OnTheFly.PassengerServices.Services
         }
         public ActionResult<Passenger> UpdateStatus(string CPF)
         {
+            CPF = CPF.Trim();
             CPF = CPF.Replace("-", "");
             CPF = CPF.Replace(".", "");
 
@@ -253,8 +258,14 @@ namespace OnTheFly.PassengerServices.Services
             return DateTime.ParseExact(dateTimeB, format, CultureInfo.InvariantCulture);
         }
 
-        public Passenger GetRestritPassengerByCPF(string CPF) => _passengerRepository.GetRestritPassengerByCPF(CPF);
+        public Passenger GetRestritPassengerByCPF(string CPF)
+        {
+            CPF = CPF.Trim();
+            CPF = CPF.Replace("-", "");
+            CPF = CPF.Replace(".", "");
 
+            return _passengerRepository.GetRestritPassengerByCPF(CPF);
+        }
     }
 
 

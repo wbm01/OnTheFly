@@ -20,6 +20,7 @@ namespace OnTheFly.CompanyServices.Services
         public List<Company> GetCompany() => _companyRepository.GetCompany();
         public Company GetCompanyByCNPJ(string CNPJ) {
 
+            CNPJ = CNPJ.Trim();
             CNPJ = CNPJ.Replace("%2F", "");
             CNPJ = CNPJ.Replace("-", "");
             CNPJ = CNPJ.Replace(".", "");
@@ -38,6 +39,7 @@ namespace OnTheFly.CompanyServices.Services
                 return new BadRequestResult();
             }
 
+            company.CNPJ = company.CNPJ.Trim();
             company.CNPJ = company.CNPJ.Replace("%2F", "");
             company.CNPJ = company.CNPJ.Replace("-", "");
             company.CNPJ = company.CNPJ.Replace(".", "");
@@ -77,6 +79,7 @@ namespace OnTheFly.CompanyServices.Services
 
         public ActionResult<Company> UpdateCompany(string CNPJ, CompanyDTO companyDTO)
         {
+            CNPJ = CNPJ.Trim();
             CNPJ = CNPJ.Replace("%2F", "");
             CNPJ = CNPJ.Replace("-", "");
             CNPJ = CNPJ.Replace(".", "");
@@ -113,6 +116,7 @@ namespace OnTheFly.CompanyServices.Services
 
         public ActionResult<Company> UpdateStatus(string CNPJ, Company company)
         {
+            CNPJ = CNPJ.Trim();
             CNPJ = CNPJ.Replace("%2F", "");
             CNPJ = CNPJ.Replace("-", "");
             CNPJ = CNPJ.Replace(".", "");
@@ -131,6 +135,7 @@ namespace OnTheFly.CompanyServices.Services
 
         public ActionResult<Company> DeleteCompany(string CNPJ)
         {
+            CNPJ = CNPJ.Trim();
             CNPJ = CNPJ.Replace("%2F", "");
             CNPJ = CNPJ.Replace("-", "");
             CNPJ = CNPJ.Replace(".", "");
