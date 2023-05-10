@@ -9,18 +9,18 @@ namespace OnTheFly.CompanyServices.Repositories
     public class CompanyRepository : ICompanyRepository
     {
         private readonly IMongoCollection<Company> _companyRepository;
-        private readonly IMongoCollection<Company> _companyRepositoryRestrit;
+        private readonly IMongoCollection<Company> _companyRepositoryRestrict;
         private readonly string _connectionString = "mongodb://localhost:27017";
         private readonly string _databaseName = "DBCompany";
         private readonly string _companyCollectionName = "Company";
-        private readonly string _companyCollectionRestritName = "CompanyRestrit";
+        private readonly string _companyCollectionRestrictName = "CompanyRestrit";
 
         public CompanyRepository()
         {
             var company = new MongoClient(_connectionString);
             var database = company.GetDatabase(_databaseName);
             _companyRepository = database.GetCollection<Company>(_companyCollectionName);
-            _companyRepositoryRestrit = database.GetCollection<Company>(_companyCollectionRestritName);
+            _companyRepositoryRestrict = database.GetCollection<Company>(_companyCollectionRestrictName);
         }
 
         public ActionResult<Company> DeleteCompany(string CNPJ) => _companyRepository.FindOneAndDelete(a => a.CNPJ == CNPJ);
@@ -29,7 +29,7 @@ namespace OnTheFly.CompanyServices.Repositories
 
         public Company GetCompanyByCNPJ(string CNPJ) => _companyRepository.Find(c => c.CNPJ == CNPJ).FirstOrDefault();
 
-        public List<Company> GetRestritCompany() => _companyRepositoryRestrit.Find(c => true).ToList();
+        public List<Company> GetRestritCompany() => _companyRepositoryRestrict.Find(c => true).ToList();
 
         public Company PostCompany(Company company)
         {
@@ -50,15 +50,15 @@ namespace OnTheFly.CompanyServices.Repositories
         public Company RestritCompany(string CNPJ)
         {
             var consult = GetCompanyByCNPJ(CNPJ);
-            _companyRepositoryRestrit.InsertOne(consult);
+            _companyRepositoryRestrict.InsertOne(consult);
             _companyRepository.DeleteOne(c => c.CNPJ == CNPJ);
             return consult;
         }
         public Company NoRestritCompany(string CNPJ)
         {
-            var consult = _companyRepositoryRestrit.Find(p => p.CNPJ == CNPJ).FirstOrDefault();
+            var consult = _companyRepositoryRestrict.Find(p => p.CNPJ == CNPJ).FirstOrDefault();
             _companyRepository.InsertOne(consult);
-            _companyRepositoryRestrit.DeleteOne(c => c.CNPJ == CNPJ);
+            _companyRepositoryRestrict.DeleteOne(c => c.CNPJ == CNPJ);
             return consult;
         }
     }

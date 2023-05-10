@@ -8,19 +8,19 @@ namespace OnTheFly.PassengerServices.Repositories
     public class PassengerRepository : IPassengerRepository
     {
         private readonly IMongoCollection<Passenger> _pasengerRepository;
-        private readonly IMongoCollection<Passenger> _pasengerRepositoryRestrit;
+        private readonly IMongoCollection<Passenger> _pasengerRepositoryRestrict;
 
         private readonly string _connectionString = "mongodb://localhost:27017";
         private readonly string _dataBaseName = "DBPassenger";
         private readonly string _passengerCollectionName = "Passenger";
-        private readonly string _passengerCollectionRestritName = "PassengerRestrit";
+        private readonly string _passengerCollectionRestrictName = "PassengerRestrit";
 
         public PassengerRepository()
         {
             var passenger = new MongoClient(_connectionString);// estabeleci a conexão com o banco
             var database = passenger.GetDatabase(_dataBaseName);// definição do nome do banco
             _pasengerRepository = database.GetCollection<Passenger>(_passengerCollectionName);// coneção a collection
-            _pasengerRepositoryRestrit = database.GetCollection<Passenger>(_passengerCollectionRestritName);
+            _pasengerRepositoryRestrict = database.GetCollection<Passenger>(_passengerCollectionRestrictName);
         }
         public ActionResult<Passenger> DeletePassenger(string CPF) => _pasengerRepository.FindOneAndDelete(p => p.CPF == CPF);
         /*
@@ -33,7 +33,7 @@ namespace OnTheFly.PassengerServices.Repositories
 
         public Passenger GetPassengerByCPF(string CPF) => _pasengerRepository.Find(p => p.CPF == CPF).FirstOrDefault();
 
-        public List<Passenger> GetRestritPassenger() => _pasengerRepositoryRestrit.Find(c => true).ToList();
+        public List<Passenger> GetRestritPassenger() => _pasengerRepositoryRestrict.Find(c => true).ToList();
 
         public Passenger PostPassenger(Passenger passenger)
         {
@@ -49,18 +49,18 @@ namespace OnTheFly.PassengerServices.Repositories
         public Passenger RestritPassenger(string CPF)
         {
             var consult = GetPassengerByCPF(CPF);
-            _pasengerRepositoryRestrit.InsertOne(consult);
+            _pasengerRepositoryRestrict.InsertOne(consult);
             _pasengerRepository.DeleteOne(c => c.CPF == CPF);
             return consult;
         }
         public Passenger NoRestritPassenger(string CPF)
         {
-            var consult = _pasengerRepositoryRestrit.Find(p => p.CPF == CPF).FirstOrDefault();
+            var consult = _pasengerRepositoryRestrict.Find(p => p.CPF == CPF).FirstOrDefault();
             _pasengerRepository.InsertOne(consult);
-            _pasengerRepositoryRestrit.DeleteOne(c => c.CPF == CPF);
+            _pasengerRepositoryRestrict.DeleteOne(c => c.CPF == CPF);
             return consult;
         }
 
-        public Passenger GetRestritPassengerByCPF(string CPF) => _pasengerRepositoryRestrit.Find(c => c.CPF == CPF).FirstOrDefault();
+        public Passenger GetRestritPassengerByCPF(string CPF) => _pasengerRepositoryRestrict.Find(c => c.CPF == CPF).FirstOrDefault();
     }
 }
