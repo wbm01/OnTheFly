@@ -37,7 +37,7 @@ namespace OnTheFly.PassengerServices.Services
             return passengers;
         }
 
-        public List<Passenger> GetRestritPassenger() => _passengerRepository.GetRestritPassenger();
+        public Passenger GetRestritPassengerByCPF(string CPF) => _passengerRepository.GetRestritPassengerByCPF(CPF);
 
         public ActionResult<Passenger> GetPassengerByCPF(string CPF)
         {
@@ -49,6 +49,7 @@ namespace OnTheFly.PassengerServices.Services
 
             return _passengerRepository.GetPassengerByCPF(CPF);
         }
+
         public ActionResult<Passenger> PostPassenger(CreatePassengerDTO passenger)
         {
             if (!ValidarCPF(passenger.CPF))
@@ -66,6 +67,12 @@ namespace OnTheFly.PassengerServices.Services
             passengerComplete.Address = addressComplete;
 
             var date = ParseDate(passenger.DtBirth);
+
+            int result = DateTime.Compare(date, DateTime.Now);
+
+            if (result > 0)
+                return new BadRequestResult();
+
             passengerComplete.DtBirth = date;
 
             passengerComplete.CPF = passengerComplete.CPF.Replace("-", "");

@@ -20,12 +20,7 @@ namespace OnTheFly.AirCraftServices.Repositories
 
         public List<AirCraft> GetAirCraftsByCompany(string cnpj) => _aircraftRepository.Find(a => a.Company.CNPJ == cnpj).ToList();
 
-        public AirCraft GetAirCraftByRAB(string RAB)
-        {
-            string RABUp = RAB.ToUpper();
-
-            return _aircraftRepository.Find(a => a.RAB == RABUp).FirstOrDefault();
-        }
+        public AirCraft GetAirCraftByRAB(string RAB) => _aircraftRepository.Find(a => a.RAB == RAB.ToUpper()).FirstOrDefault();
 
         public AirCraft CreateAirCraft(AirCraft aircraft)
         {

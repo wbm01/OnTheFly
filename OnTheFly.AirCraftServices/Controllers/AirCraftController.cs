@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.DTO;
 using OnTheFly.AirCraftServices.config;
 using OnTheFly.AirCraftServices.Services;
 
@@ -30,15 +31,15 @@ namespace OnTheFly.AirCraftServices.Controllers
         }
 
         [HttpPost(Name = "Create AirCraft")]
-        public ActionResult<AirCraft> CreateAirCraft(AirCraft airCraft)
+        public Task<ActionResult<AirCraft>> CreateAirCraft(CreateAirCraftDTO airCraftDTO)
         {
-            return _airCraftService.CreateAirCraft(airCraft);
+            return _airCraftService.CreateAirCraft(airCraftDTO);
         }
 
         [HttpPut("{RAB}", Name = "Update AirCraft")]
-        public ActionResult<AirCraft> UpdateAirCraft(string RAB, AirCraft airCraft)
+        public ActionResult<AirCraft> UpdateAirCraft(string RAB, [FromBody]string DtLastFlight)
         {
-            return _airCraftService.UpdateAirCraft(RAB, airCraft);
+            return _airCraftService.UpdateAirCraft(RAB, DtLastFlight);
         }
 
         [HttpDelete("{RAB}", Name = "Delete AirCraft")]
