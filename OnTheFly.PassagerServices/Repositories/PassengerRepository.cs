@@ -13,7 +13,7 @@ namespace OnTheFly.PassengerServices.Repositories
         private readonly string _connectionString = "mongodb://localhost:27017";
         private readonly string _dataBaseName = "DBPassenger";
         private readonly string _passengerCollectionName = "Passenger";
-        private readonly string _passengerCollectionRestritName = "PassengerRestrit";
+        private readonly string _passengerCollectionRestrictName = "PassengerRestrict";
 
         public PassengerRepository()
         {
@@ -60,5 +60,7 @@ namespace OnTheFly.PassengerServices.Repositories
             _passengerRepositoryRestrit.DeleteOne(c => c.CPF == CPF);
             return consult;
         }
+
+        public Passenger GetRestritPassengerByCPF(string CPF) => _pasengerRepositoryRestrict.Find(c => c.CPF == CPF).FirstOrDefault();
     }
 }

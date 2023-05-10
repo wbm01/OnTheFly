@@ -17,7 +17,16 @@ namespace OnTheFly.CompanyServices.Services
         }
 
         public List<Company> GetCompany() => _companyRepository.GetCompany();
-        public Company GetCompanyByCNPJ(string CNPJ) => _companyRepository.GetCompanyByCNPJ(CNPJ);
+        public Company GetCompanyByCNPJ(string CNPJ) {
+
+            CNPJ = CNPJ.Replace("%2F", "");
+            CNPJ = CNPJ.Replace("-", "");
+            CNPJ = CNPJ.Replace(".", "");
+            CNPJ = CNPJ.Replace("/", "");
+
+            return _companyRepository.GetCompanyByCNPJ(CNPJ);
+
+        }
 
         public List<Company> GetRestritCompany() => _companyRepository.GetRestritCompany();
 
@@ -52,7 +61,8 @@ namespace OnTheFly.CompanyServices.Services
                 {
                     company.NameOpt = company.Name;
                 }
-
+                company.CNPJ = company.CNPJ.Trim();
+                company.CNPJ = company.CNPJ.Replace(".", "").Replace("-", "").Replace("/", "");
                 return _companyRepository.PostCompany(company);
             }
 
@@ -91,7 +101,7 @@ namespace OnTheFly.CompanyServices.Services
             return _companyRepository.UpdateCompany(CNPJ, company);
         }
 
-        public ActionResult<Company> UpdateStatus(string CNPJ)
+        public ActionResult<Company> UpdateStatus(string CNPJ, Company company)
         {
             CNPJ = CNPJ.Replace("%2F", "/");
 

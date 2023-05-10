@@ -85,13 +85,13 @@ namespace OnTheFly.FlightsService.Services
             airportResponse.EnsureSuccessStatusCode();
 
             string airportStr = await airportResponse.Content.ReadAsStringAsync();
-            Airport airport = BsonSerializer.Deserialize<Airport>(airportStr);
+            Airport airport = JsonConvert.DeserializeObject<Airport>(airportStr);
 
             var date = ParseDate(flightDTO.Departure);
 
             var flightExist = GetFlight(flightDTO.IATA, flightDTO.RAB, flightDTO.Departure);
 
-            if(flightExist != null)
+            if(flightExist.Value != null)
             {
                 return new BadRequestObjectResult("Esse Voo já existe!");
             }

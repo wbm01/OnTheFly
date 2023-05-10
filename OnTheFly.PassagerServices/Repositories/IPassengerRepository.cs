@@ -18,6 +18,6 @@ namespace OnTheFly.PassengerServices.Repositories
 
         Passenger RestritPassenger(string CPF);
 
-        List<Passenger> GetRestritPassenger();
+        Passenger GetRestritPassengerByCPF(string CPF);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Models.DTO;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Models
 {
@@ -9,6 +10,7 @@ namespace Models
         [BsonId]
         public string CPF { get; set; }
         public string Name { get; set; }
+        [SwaggerSchema(Format = "byte")]
         public char Gender { get; set; }
         public string? Phone { get; set; }
         public DateTime DtBirth { get; set; }

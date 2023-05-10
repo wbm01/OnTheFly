@@ -37,15 +37,19 @@ namespace OnTheFly.PassengerServices.Services
             return passengers;
         }
 
-        public List<Passenger> GetRestritPassenger() => _passengerRepository.GetRestritPassenger();
+        public Passenger GetRestritPassengerByCPF(string CPF) => _passengerRepository.GetRestritPassengerByCPF(CPF);
 
         public ActionResult<Passenger> GetPassengerByCPF(string CPF)
         {
             if (!validateCPF(CPF))
                 return new BadRequestObjectResult("CPF inválido !");
 
+            CPF = CPF.Replace("-", "");
+            CPF = CPF.Replace(".", "");
+
             return _passengerRepository.GetPassengerByCPF(CPF);
         }
+
         public ActionResult<Passenger> PostPassenger(CreatePassengerDTO passenger)
         {
             if (!validateCPF(passenger.CPF))
@@ -93,6 +97,9 @@ namespace OnTheFly.PassengerServices.Services
                 return new BadRequestObjectResult("Data de nascimento errada!");
 
             passengerComplete.DtBirth = date;
+
+            passengerComplete.CPF = passengerComplete.CPF.Replace("-", "");
+            passengerComplete.CPF = passengerComplete.CPF.Replace(".", "");
 
             return _passengerRepository.PostPassenger(passengerComplete);
         }
@@ -236,6 +243,8 @@ namespace OnTheFly.PassengerServices.Services
             var format = "dd/MM/yyyy";
             return DateTime.ParseExact(dateTimeB, format, CultureInfo.InvariantCulture);
         }
+
+        public Passenger GetRestritPassengerByCPF(string CPF) => _passengerRepository.GetRestritPassengerByCPF(CPF);
 
     }
 
