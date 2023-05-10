@@ -50,9 +50,9 @@ namespace OnTheFly.Services
             //response.EnsureSuccessStatusCode();            
         }
 
-        public async Task<ActionResult<AirCraft>> UpdateAirCraft(string RAB, string DtLastFlight)
+        public async Task<ActionResult<AirCraft>> UpdateAirCraft(string RAB, UpdateAirCraftDTO airCraftDTO)
         {
-            HttpResponseMessage response = await _airCraftClient.PutAsJsonAsync(_airCraftHost + RAB, DtLastFlight);
+            HttpResponseMessage response = await _airCraftClient.PutAsJsonAsync(_airCraftHost + RAB, airCraftDTO);
             response.EnsureSuccessStatusCode();
 
             string airCraftResponse = await response.Content.ReadAsStringAsync();

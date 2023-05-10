@@ -24,21 +24,5 @@ namespace OnTheFly.AirportServices.Services
         {
             return _airportRepository.GetAirportByIATA(IATA);
         }
-
-
-        /*public Airport CreateAirport(Airport airport)
-        {
-            return _airportRepository.CreateAirport(airport);
-        }
-
-        public Airport UpdateAirport(string IATA, Airport airport)
-        {
-            return _airportRepository.UpdateAirport(IATA, airport);
-        }
-
-        public ActionResult<Airport> DeleteAirport(string RAB)
-        {
-            return _airportRepository.DeleteAirport(RAB);
-        }*/
     }
 }

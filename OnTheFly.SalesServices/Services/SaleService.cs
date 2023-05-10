@@ -21,8 +21,8 @@ namespace OnTheFly.SalesServices.Services
         public SaleService(SaleRepository saleRepository)
         {
             _saleRepository = saleRepository;
-            _flightHost = "https://localhost:7076/api/Flights/";
-            _passengerHost = "https://localhost:7240/api/Passengers/";
+            _flightHost = "https://localhost:5004/api/Flights/";
+            _passengerHost = "https://localhost:5005/api/Passengers/";            
             _saleClient = new();
         }
 
@@ -71,8 +71,8 @@ namespace OnTheFly.SalesServices.Services
             {
                 Flight = flight,
                 Passenger = passengerlist,
-                Reserved = false,
-                Sold = false
+                Reserved = saleDTO.Reserved,
+                Sold = saleDTO.Sold
             };
 
             if (AgeCalculator(sale.Passenger[0])) return new BadRequestObjectResult("Passageiro menor de 18 anos");
@@ -94,6 +94,11 @@ namespace OnTheFly.SalesServices.Services
                 }
             }
 
+            if(sale.Sold == sale.Reserved)
+            {
+                return new BadRequestObjectResult("Não foi definido se é uma compra ou uma reserva");
+            }            
+
             //bool test = false;
             //salesflight.ForEach(s =>
             //{
@@ -104,9 +109,9 @@ namespace OnTheFly.SalesServices.Services
             //            passenger.CPF = p.CPF;
             //        });
             //    });
-            //}); 
+            //});
 
-            return _saleRepository.PostSale(sale);
+            return await _saleRepository.PostSale(sale);
         }
 
         private bool VerifyInactivePassenger(List<Passenger> passengerlist)

@@ -18,7 +18,7 @@ namespace OnTheFly.Controllers
         }
 
 
-        [HttpGet(Name = "Get Airports")]
+        [HttpGet(Name = "GetAirports")]
         public async Task<List<AirportDTO>> GetAirports()
         {
             List<Airport> airports = await _airportService.GetAirports();
@@ -34,7 +34,7 @@ namespace OnTheFly.Controllers
             return airportDTOs;
         }
 
-        [HttpGet("{IATA}", Name = "Get Airport By IATA")]
+        [HttpGet("{IATA}", Name = "GetAirportByIATA")]
         public async Task<AirportDTO> GetAirportByIATA(string IATA)
         {
             Airport airport = _airportService.GetAirportByIATA(IATA).Result;
@@ -51,22 +51,22 @@ namespace OnTheFly.Controllers
         }
 
 
-        /*[HttpPost(Name = "Creat Airport")]
-        public async Task<Airport> CreateAirport(Airport airport)
-        {
-            return await _airportService.CreateAirport(airport);
-        }
+        //[HttpPost(Name = "Creat Airport")]
+        //public async Task<Airport> CreateAirport(Airport airport)
+        //{
+        //    return await _airportService.CreateAirport(airport);
+        //}
 
-        [HttpDelete("{IATA}", Name = "Delete Airport")]
-        public async Task<Airport> DeleteAirport(string IATA)
-        {
-            return await _airportService.DeleteAirport(IATA);
-        }
+        //[HttpDelete("{IATA}", Name = "Delete Airport")]
+        //public async Task<Airport> DeleteAirport(string IATA)
+        //{
+        //    return await _airportService.DeleteAirport(IATA);
+        //}
 
-        [HttpPut("{IATA}", Name = "Update Airport")]
-        public async Task<Airport> UpdateAirport(string IATA, Airport airport)
-        {
-            return await _airportService.UpdateAirport(IATA, airport);
-        }*/
+        //[HttpPut("{IATA}", Name = "Update Airport")]
+        //public async Task<Airport> UpdateAirport(string IATA, Airport airport)
+        //{
+        //    return await _airportService.UpdateAirport(IATA, airport);
+        //}
     }
 }

@@ -19,7 +19,7 @@ namespace OnTheFly.SalesProducer.Controllers
             _factory = factory;
         }
 
-        [HttpPost]
+        [HttpPost(Name = "ReservedProducer")]
         public IActionResult PostSoldMQ([FromBody] Sale sale)
         {
             using (var connection = _factory.CreateConnection())

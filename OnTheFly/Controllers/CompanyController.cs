@@ -10,7 +10,7 @@ namespace OnTheFly.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        /*private readonly CompanyService _companyService;
+        private readonly CompanyService _companyService;
 
         public CompanyController()
         {
@@ -18,41 +18,47 @@ namespace OnTheFly.Controllers
         }
 
 
-        [HttpGet(Name = "Get Company")]
+        [HttpGet(Name = "GetListCompany")]
         public async Task<List<Company>> GetCompany()
         {
             return await _companyService.GetCompany();
         }
 
-        [HttpGet("{CNPJ}", Name = "Get Company By CNPJ")]
+        [HttpGet("{CNPJ}", Name = "GetCompanyByCNPJ")]
         public async Task<Company> GetCompanyByCNPJ(string CNPJ)
         {
             return await _companyService.GetCompanyByCNPJ(CNPJ);
         }
 
 
-        [HttpPost(Name = "Create Company")]
-        public async Task<Company> CreateCompany(Company company)
+        [HttpPost(Name = "CreateCompany")]
+        public async Task<Company> PostCompany(Company company)
         {
-            return await _companyService.CreateCompany(company);
+            return await _companyService.PostCompany(company);
         }
 
-        [HttpDelete("{CNPJ}", Name = "Delete Company")]
+        [HttpDelete("{CNPJ}", Name = "DeleteCompany")]
         public async Task<Company> DeleteCompany(string CNPJ)
         {
             return await _companyService.DeleteCompany(CNPJ);
         }
 
-        [HttpPut("{CNPJ}", Name = "Update Company")]
-        public async Task<CompanyDTO> UpdateCompany(string CNPJ, Company company)
+        [HttpPut("{CNPJ}", Name = "UpdateCompany")]
+        public async Task<Company> PutCompany(string CNPJ, CompanyDTO company)
         {
-            return await _companyService.UpdateCompany(CNPJ, company);
+            return await _companyService.PutCompany(CNPJ, company);
         }
 
-        [HttpPut("{CNPJ}", Name = "Update Status")]
-        public async Task<Company> UpdateStatus(string CNPJ, Company company)
+        [HttpPut("restrict/{CNPJ}", Name = "UpdateStatusCompany")]
+        public async void UpdateStatus(string CNPJ, Company company)
         {
-            return await _companyService.UpdateStatus(CNPJ, company);
+            await _companyService.UpdateStatus(CNPJ, company);
+        }
+
+        /*[HttpPut("restrict/{CNPJ}", Name = "UpdateStatus")]
+        public async void UpdateStatus(string CNPJ, Company company)
+        {
+            await _companyService.UpdateStatus(CNPJ, company);
         }*/
     }
 }

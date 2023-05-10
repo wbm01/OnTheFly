@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
+using System.Numerics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Models;
 using Models.DTO;
 using Newtonsoft.Json;
@@ -18,7 +20,7 @@ namespace OnTheFly.AirCraftServices.Services
         {
             _airCraftClient = new();
             _airCraftRepository = repository;
-            _companyHost = "https://localhost:7226/api/Companies/";
+            _companyHost = "https://localhost:5001/api/Companies/";
         }
 
         public List<AirCraft> GetAirCrafts()
@@ -32,7 +34,7 @@ namespace OnTheFly.AirCraftServices.Services
             {
                 AirCraft airCraft = _airCraftRepository.GetAirCraftByRAB(RAB);
 
-                if(airCraft == null)
+                if (airCraft == null)
                 {
                     return new BadRequestObjectResult("Aeronave não encontrada!");
                 }
@@ -51,6 +53,28 @@ namespace OnTheFly.AirCraftServices.Services
             string companyResponse = await response.Content.ReadAsStringAsync();
             Company company = JsonConvert.DeserializeObject<Company>(companyResponse);
 
+            //Lista de companhias restritas
+            HttpResponseMessage responseCompany = await _airCraftClient.GetAsync($"{_companyHost}GetRestritCompany");
+            responseCompany.EnsureSuccessStatusCode();
+
+            string companyResponseRestric = await responseCompany.Content.ReadAsStringAsync();
+            List<Company> companyList = JsonConvert.DeserializeObject<List<Company>>(companyResponseRestric);
+
+            Company companyRestric = new();
+
+            foreach (var comp in companyList)
+            {
+                if (comp.CNPJ == airCraftDTO.cnpj)
+                {
+                    companyRestric = comp;
+                }
+            }
+
+            if (company == null)
+            {
+                company = companyRestric;
+            }
+
             if (company == null)
             {
                 return new NotFoundObjectResult("Companhia não encontrada!");
@@ -59,6 +83,13 @@ namespace OnTheFly.AirCraftServices.Services
             if (!ValidateRAB(airCraftDTO.rab))
             {
                 return new BadRequestObjectResult("RAB inválido!");
+            }
+
+            
+
+            if ((bool)(company.Status == true))
+            {
+                return new UnauthorizedObjectResult("Companhia inativa!");
             }
 
             AirCraft airCraft = new()
@@ -72,15 +103,15 @@ namespace OnTheFly.AirCraftServices.Services
             return _airCraftRepository.CreateAirCraft(airCraft);
         }
 
-        public ActionResult<AirCraft> UpdateAirCraft(string RAB, string DtLastFlight)
+        public ActionResult<AirCraft> UpdateAirCraft(string RAB, UpdateAirCraftDTO airCraftDTO)
         {
             if (ValidateRAB(RAB))
             {
-                DateTime DtLast = ParseDate(DtLastFlight);
+                DateTime DtLast = ParseDate(airCraftDTO.DtLastFlight);
 
                 AirCraft airCraft = _airCraftRepository.GetAirCraftByRAB(RAB);
 
-                if(airCraft == null)
+                if (airCraft == null)
                 {
                     return new NotFoundObjectResult("Aeronave não encontrada!");
                 }
@@ -99,14 +130,14 @@ namespace OnTheFly.AirCraftServices.Services
             {
                 AirCraft airCraft = _airCraftRepository.GetAirCraftByRAB(RAB);
 
-                if(airCraft == null)
+                if (airCraft == null)
                 {
                     return new NotFoundObjectResult("Aeronave não encontrada!");
                 }
 
                 int airCraftsCount = _airCraftRepository.GetAirCraftsByCompany(airCraft.Company.CNPJ).Count;
 
-                if(airCraftsCount == 1)
+                if (airCraftsCount == 1)
                 {
                     return new StatusCodeResult(401);
                 }

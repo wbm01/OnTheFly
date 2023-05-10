@@ -45,7 +45,7 @@ namespace Services
             }
         }
 
-        public async Task<Company> CreateCompany(Company company)
+        public async Task<Company> PostCompany(Company company)
         {
             try
             {
@@ -75,14 +75,14 @@ namespace Services
             }
         }
 
-        public async Task<CompanyDTO> UpdateCompany(string CNPJ, Company company)
+        public async Task<Company> PutCompany(string CNPJ, CompanyDTO company)
         {
             try
             {
                 HttpResponseMessage resposta = await customerCompany.PutAsJsonAsync("https://localhost:7226/api/Companies/" + CNPJ, company);
                 resposta.EnsureSuccessStatusCode();
                 string companyReturn = await resposta.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<CompanyDTO>(companyReturn);
+                return JsonConvert.DeserializeObject<Company>(companyReturn);
             }
             catch (HttpRequestException e)
             {

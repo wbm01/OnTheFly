@@ -24,7 +24,7 @@ namespace OnTheFly.Controllers
             return _airCraftService.GetAirCrafts();
         }
 
-        [HttpGet("{RAB}", Name = "Get AirCraft By RAB")]
+        [HttpGet("{RAB:length(6)}", Name = "Get AirCraft By RAB")]
         public Task<ActionResult<AirCraft>> GetAirCraftByRAB(string RAB)
         {
             return _airCraftService.GetAirCraftByRAB(RAB);
@@ -36,13 +36,13 @@ namespace OnTheFly.Controllers
             return _airCraftService.CreateAirCraft(airCraftDTO);
         }
 
-        [HttpPut("{RAB}", Name = "Update AirCraft")]
-        public Task<ActionResult<AirCraft>> UpdateAirCraft(string RAB, [FromBody]string DtLastFlight)
+        [HttpPut("{RAB:length(6)}", Name = "Update AirCraft")]
+        public Task<ActionResult<AirCraft>> UpdateAirCraft(string RAB, UpdateAirCraftDTO airCraftDTO)
         {
-            return _airCraftService.UpdateAirCraft(RAB, DtLastFlight);
+            return _airCraftService.UpdateAirCraft(RAB, airCraftDTO);
         }
 
-        [HttpDelete("{RAB}", Name = "Delete AirCraft")]
+        [HttpDelete("{RAB:length(6)}", Name = "Delete AirCraft")]
         public Task<HttpStatusCode> DeleteAirCraft(string RAB)
         {           
             return _airCraftService.DeleteAirCraft(RAB);

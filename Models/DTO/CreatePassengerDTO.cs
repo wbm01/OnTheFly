@@ -11,16 +11,15 @@ namespace Models.DTO
     public class CreatePassengerDTO
     {
 
-        public string CPF { get; set; }
-        public string Name { get; set; }
-        [SwaggerSchema(Format = "byte")]
-        public char Gender { get; set; }
-        public string? Phone { get; set; }
-        public string DtBirth { get; set; }
-        public bool? Status { get; set; }
-        public string ZipCode { get; set; }
-        public int Number { get; set; }
-
-
+            public string CPF { get; set; }
+            public string Name { get; set; }
+            public string Gender { get; set; }
+            public string? Phone { get; set; }
+            public string DtBirth { get; set; }
+            public bool? Status { get; set; }
+            public string ZipCode { get; set;}
+            public int Number { get; set; }
+          
+        
     }
 }

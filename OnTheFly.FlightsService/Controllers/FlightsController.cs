@@ -17,31 +17,31 @@ namespace OnTheFly.FlightsService.Controllers
             _flightService = service;
         }
 
-        [HttpGet(Name = "Get All Flights")]
+        [HttpGet(Name = "GetAllFlights")]
         public List<Flight> GetFlights()
         {
             return _flightService.GetFlights();
         }
 
-        [HttpGet("{IATA:length(3)}, {RAB:length(6)}", Name = "Get Flight")]
+        [HttpGet("{IATA:length(3)}, {RAB:length(6)}", Name = "GetFlight")]
         public ActionResult<Flight> GetFlight(string IATA, string RAB, string departure)
         {
             return _flightService.GetFlight(IATA, RAB, departure);
         }
 
-        [HttpPost(Name = "Create Flight")]
+        [HttpPost(Name = "CreateFlight")]
         public Task<ActionResult<Flight>> CreateFlight(CreateFlightDTO flightDTO)
         {
             return _flightService.CreateFlight(flightDTO);
         }
 
-        [HttpPut("{IATA:length(3)}, {RAB:length(6)}", Name = "Update Flight")]
+        [HttpPut("{IATA:length(3)}, {RAB:length(6)}", Name = "UpdateFlight")]
         public ActionResult<Flight> UpdateFlight(string IATA, string RAB, string schedule, UpdateFlightDTO flightDTO)
         {
             return _flightService.UpdateFlight(IATA, RAB, schedule,flightDTO);
         }
 
-        [HttpDelete("{IATA:length(3)}, {RAB:length(6)}", Name = "Delete Flight")]
+        [HttpDelete("{IATA:length(3)}, {RAB:length(6)}", Name = "DeleteFlight")]
         public ActionResult<Flight> DeleteFlight(string IATA, string RAB, string departure)
         {
             return _flightService.DeleteFlight(IATA, RAB, departure);
