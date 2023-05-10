@@ -69,7 +69,7 @@ namespace OnTheFly.SalesServices.Services
                 Sold = false
             };
 
-            if (AgeCalculate(sale.Passenger[0])) return new BadRequestObjectResult("Passageiro menor de 18 anos");
+            if (AgeCalculator(sale.Passenger[0])) return new BadRequestObjectResult("Passageiro menor de 18 anos");
 
             List<Sale> allsales = _saleRepository.GetSale();
             List<Sale> salesflight = allsales.FindAll(s => s.Flight._id == sale.Flight._id).ToList();
@@ -106,7 +106,7 @@ namespace OnTheFly.SalesServices.Services
         public Sale UpdateSale(string iata, string rab, DateTime departure, SaleDTO saleDTO) => _saleRepository.UpdateSale(iata, rab, departure, saleDTO);
         public ActionResult<Sale> DeleteSale(string iata, string rab, DateTime departure) => _saleRepository.DeleteSale(iata, rab, departure);
 
-        public static bool AgeCalculate(Passenger passenger)
+        public static bool AgeCalculator(Passenger passenger)
         {
             int idade = DateTime.Now.Year - passenger.DtBirth.Year;
             if (DateTime.Now.DayOfYear < passenger.DtBirth.DayOfYear)
