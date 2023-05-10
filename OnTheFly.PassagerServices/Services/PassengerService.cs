@@ -37,7 +37,7 @@ namespace OnTheFly.PassengerServices.Services
             return passengers;
         }
 
-        public Passenger GetRestritPassengerByCPF(string CPF) => _passengerRepository.GetRestritPassengerByCPF(CPF);
+        //public Passenger GetRestritPassengerByCPF(string CPF) => _passengerRepository.GetRestritPassengerByCPF(CPF);
 
         public ActionResult<Passenger> GetPassengerByCPF(string CPF)
         {

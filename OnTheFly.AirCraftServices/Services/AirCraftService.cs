@@ -20,7 +20,7 @@ namespace OnTheFly.AirCraftServices.Services
         {
             _airCraftClient = new();
             _airCraftRepository = repository;
-            _companyHost = "https://localhost:7226/api/Companies/";
+            _companyHost = "https://localhost:5001/api/Companies/";
         }
 
         public List<AirCraft> GetAirCrafts()

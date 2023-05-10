@@ -22,9 +22,9 @@ namespace OnTheFly.FlightsService.Services
         public FlightService(FlightsRepository repository)
         {
             _flightsRepository = repository;
-            _airCraftHost = "https://localhost:7250/api/AirCraft/";
-            _airportHost = "https://localhost:7206/api/Airport/";
-            _companyHost = "https://localhost:7226/api/Companies/GetRestritCompany";
+            _airCraftHost = "https://localhost:5002/api/AirCraft/";
+            _airportHost = "https://localhost:5003/api/Airport/";
+            _companyHost = "https://localhost:5001/api/Companies/GetRestritCompany";
             _flightstClient = new();
         }
 
