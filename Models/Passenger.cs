@@ -18,9 +18,18 @@ namespace Models
 
         public Passenger(CreatePassengerDTO passengerDTO)
         {
+            if (passengerDTO.Gender[0] == 'M' || passengerDTO.Gender[0] == 'm')
+            {
+                Gender = 'M';
+            }
+            else
+            {
+                Gender = 'F';
+
+            }
+
             CPF = passengerDTO.CPF; 
             Name = passengerDTO.Name;
-            Gender = passengerDTO.Gender;
             Phone = passengerDTO.Phone;
             DtRegister = DateTime.Now;
             Status = passengerDTO.Status;

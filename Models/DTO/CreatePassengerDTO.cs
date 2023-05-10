@@ -12,7 +12,7 @@ namespace Models.DTO
 
             public string CPF { get; set; }
             public string Name { get; set; }
-            public char Gender { get; set; }
+            public string Gender { get; set; }
             public string? Phone { get; set; }
             public string DtBirth { get; set; }
             public bool? Status { get; set; }

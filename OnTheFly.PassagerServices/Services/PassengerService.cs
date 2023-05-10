@@ -16,8 +16,8 @@ namespace OnTheFly.PassengerServices.Services
         }
         public ActionResult<Passenger> DeletePassenger(string CPF)
         {
-            if (!ValidarCPF(CPF))
-                return new BadRequestResult();
+            if (!validateCPF(CPF))
+               return new BadRequestObjectResult("CPF inválido !");
 
             return _passengerRepository.DeletePassenger(CPF);
         }
@@ -41,24 +41,47 @@ namespace OnTheFly.PassengerServices.Services
 
         public ActionResult<Passenger> GetPassengerByCPF(string CPF)
         {
-            if (!ValidarCPF(CPF))
-                return new BadRequestResult();
+            if (!validateCPF(CPF))
+                return new BadRequestObjectResult("CPF inválido !");
 
             return _passengerRepository.GetPassengerByCPF(CPF);
         }
         public ActionResult<Passenger> PostPassenger(CreatePassengerDTO passenger)
         {
-            if (!ValidarCPF(passenger.CPF))
-                return new BadRequestResult();
+            if (!validateCPF(passenger.CPF))
+                return new BadRequestObjectResult("CPF inválido !");
 
-            if (passenger.Gender != 'M' && passenger.Gender != 'm' && passenger.Gender != 'f' && passenger.Gender != 'F')
-                return new BadRequestResult();
+            if(passenger.Phone != null && passenger.Phone.Length > 14)
+                return new BadRequestObjectResult("Número de telefone inválido !");
+            
+            if (passenger.Gender.Length == 0)
+                return new BadRequestObjectResult("Gênero não preechido!");
+            
+
+            string gender = passenger.Gender.Trim().ToUpper();
+            var firstLetter = gender[0];
+
+            if (gender.Equals("MASCULINO") == false && 
+                gender.Equals("FEMININO") == false &&
+                firstLetter != 'M' && firstLetter != 'F')
+            {
+                return new BadRequestObjectResult("Gênero incorreto!");
+            }
+
+          
+            Passenger passengerComplete = new Passenger(passenger);
+            passengerComplete.Gender = firstLetter;
 
             AddressDTO address = PostOfficeService.GetAddress(passenger.ZipCode).Result;
+
+            if (address == null)
+                return new BadRequestObjectResult("Endereço inválido !");
+
+            if (address.CEP == null)
+                return new BadRequestObjectResult("Endereço inválido !");
+
             Address addressComplete = new Address(address);
             addressComplete.Number = passenger.Number;
-
-            Passenger passengerComplete = new Passenger(passenger);
 
             passengerComplete.Address = addressComplete;
 
@@ -67,7 +90,7 @@ namespace OnTheFly.PassengerServices.Services
             int result = DateTime.Compare(date, DateTime.Now);
 
             if (result > 0)
-                return new BadRequestResult();
+                return new BadRequestObjectResult("Data de nascimento errada!");
 
             passengerComplete.DtBirth = date;
 
@@ -75,42 +98,51 @@ namespace OnTheFly.PassengerServices.Services
         }
         public ActionResult<Passenger> UpdatePassenger(UpdatePassengerDTO passenger, string CPF)
         {
-            if (!ValidarCPF(CPF))
-                return new BadRequestResult();
+            if (!validateCPF(CPF))
+                return new BadRequestObjectResult("CPF inválido !");
 
-            var aux = _passengerRepository.GetPassengerByCPF(CPF);
-            aux.Name = passenger.Name;
-            aux.Gender = passenger.Gender;
-            aux.Phone = passenger.Phone;
+            var auxiliaryPassenger = _passengerRepository.GetPassengerByCPF(CPF);
+            auxiliaryPassenger.Name = passenger.Name;
+            auxiliaryPassenger.Gender = passenger.Gender;
+            auxiliaryPassenger.Phone = passenger.Phone;
 
             var date = ParseDate(passenger.DtBirth);
-            aux.DtBirth = date;
-            aux.Status = passenger.Status;
+            auxiliaryPassenger.DtBirth = date;
+            auxiliaryPassenger.Status = passenger.Status;
             AddressDTO address = PostOfficeService.GetAddress(passenger.ZipCode).Result;
 
             if (address == null)
-                return new NotFoundResult();
+                return new BadRequestObjectResult("Endereço inválido !");
 
-            if(address.CEP == null)
-                return new NotFoundResult();
+            if (address.CEP == null)
+                return new BadRequestObjectResult("Endereço inválido !");
 
 
             Address addressComplete = new Address(address);
             addressComplete.Number = passenger.Number;
-            aux.Address = addressComplete;  
+            auxiliaryPassenger.Address = addressComplete;  
 
-            return _passengerRepository.UpdatePassenger(aux, CPF);
+            return _passengerRepository.UpdatePassenger(auxiliaryPassenger, CPF);
         }
         public ActionResult<Passenger> UpdateStatus(string CPF)
         {
-            var result = _passengerRepository.GetPassengerByCPF(CPF);
-            
-            if(result == null)
-            {
-                return new BadRequestResult();  
-            }
+            var resultNoRestrit = _passengerRepository.GetPassengerByCPF(CPF);
+            var resultRestrit = _passengerRepository.GetRestritPassenger();
+            Passenger restritPassenger = new Passenger();
 
-            if(result != null)
+            foreach(Passenger passenger in resultRestrit)
+            {
+                if(passenger.CPF == CPF)
+                {
+                    restritPassenger = passenger;
+                }
+            }
+            
+            if(resultNoRestrit == null && restritPassenger == null)
+            {
+                return new BadRequestObjectResult("Passegeiro não encontrado !");
+            }
+            if(resultNoRestrit != null)
             {
                 return _passengerRepository.RestritPassenger(CPF);
             }
@@ -121,7 +153,7 @@ namespace OnTheFly.PassengerServices.Services
 
         }
 
-        private static bool ValidarCPF(string sourceCPF)
+        private static bool validateCPF(string sourceCPF)
         {
             if (String.IsNullOrWhiteSpace(sourceCPF))
                 return false;
@@ -137,8 +169,8 @@ namespace OnTheFly.PassengerServices.Services
             }
 
             int[] cpfArray;
-            int totalDigitoI = 0;
-            int totalDigitoII = 0;
+            int totalDigitI = 0;
+            int totalDigitII = 0;
             int modI;
             int modII;
 
@@ -172,11 +204,11 @@ namespace OnTheFly.PassengerServices.Services
 
             for (int posicao = 0; posicao < cpfArray.Length - 2; posicao++)
             {
-                totalDigitoI += cpfArray[posicao] * (10 - posicao);
-                totalDigitoII += cpfArray[posicao] * (11 - posicao);
+                totalDigitI += cpfArray[posicao] * (10 - posicao);
+                totalDigitII += cpfArray[posicao] * (11 - posicao);
             }
 
-            modI = totalDigitoI % 11;
+            modI = totalDigitI % 11;
             if (modI < 2) { modI = 0; }
             else { modI = 11 - modI; }
 
@@ -185,9 +217,9 @@ namespace OnTheFly.PassengerServices.Services
                 return false;
             }
 
-            totalDigitoII += modI * 2;
+            totalDigitII += modI * 2;
 
-            modII = totalDigitoII % 11;
+            modII = totalDigitII % 11;
             if (modII < 2) { modII = 0; }
             else { modII = 11 - modII; }
             if (cpfArray[10] != modII)

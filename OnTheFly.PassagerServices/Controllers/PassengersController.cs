@@ -35,7 +35,7 @@ namespace OnTheFly.PassengerServices.Controllers
         {
             return _passengerService.PostPassenger(passenger);
         }
-        [HttpPost("{CPF}")]
+        [HttpPost("{CPF}", Name = "RestritPassenger")]
         public ActionResult<Passenger> UpdateStatus(string CPF)
         {
             return _passengerService.UpdateStatus(CPF);
