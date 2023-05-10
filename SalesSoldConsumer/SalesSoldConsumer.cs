@@ -11,7 +11,7 @@ HttpClient _saleClient;
 
 var client = new MongoClient("mongodb://localhost:27017");
 var database = client.GetDatabase("DBSales");
-_saleRepository = database.GetCollection<Sale>("Sales");
+_saleRepository = database.GetCollection<Sale>("Sold");
 _saleClient = new();
 
 const string QUEUE_NAME = "sold";
