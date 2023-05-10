@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.DTO;
+using Models;
 
 namespace OnTheFly.Controllers
 {
@@ -7,6 +9,6 @@ namespace OnTheFly.Controllers
     [ApiController]
     public class AirCraftController : ControllerBase
     {
-
+        
     }
 }

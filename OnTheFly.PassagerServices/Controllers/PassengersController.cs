@@ -23,22 +23,22 @@ namespace OnTheFly.PassengerServices.Controllers
             return _passengerService.GetPassenger();
         }
 
-        [HttpGet("{CPF}")]
+        [HttpGet("{CPF}", Name = "GetPassenger")]
         public ActionResult<Passenger> GetPassengerByCPF(string CPF)
         {
             return _passengerService.GetPassengerByCPF(CPF);
         }
 
-        [HttpGet("Get Restrit Passenger")]
+        [HttpGet("GetRestritPassenger")]
         public ActionResult<List<Passenger>> GetRestritPassenger() => _passengerService.GetRestritPassenger();
 
-        [HttpPost]
+        [HttpPost(Name = "PostPassenger")]
         public ActionResult<Passenger> PostPassenger(CreatePassengerDTO passenger)
         {
             return _passengerService.PostPassenger(passenger);
         }
 
-        [HttpPost("{CPF}")]
+        [HttpPatch("{CPF}", Name = "UpdateStatusPassanger")]
         public ActionResult<Passenger> UpdateStatus(string CPF)
         {
             return _passengerService.UpdateStatus(CPF);
@@ -56,7 +56,7 @@ namespace OnTheFly.PassengerServices.Controllers
             return _passengerService.DeletePassenger(CPF);
         }
 
-        [HttpGet("Get Restrit Passenger By CPF")]
+        [HttpGet("restrict/{cpf}", Name = "GetRestritPassengerByCPF")]
         public ActionResult<Passenger> GetRestritPassengerByCPF(string CPF) => _passengerService.GetRestritPassengerByCPF(CPF);
     }
 }

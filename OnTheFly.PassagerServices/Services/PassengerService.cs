@@ -44,6 +44,9 @@ namespace OnTheFly.PassengerServices.Services
             if (!ValidarCPF(CPF))
                 return new BadRequestResult();
 
+            CPF = CPF.Replace("-", "");
+            CPF = CPF.Replace(".", "");
+
             return _passengerRepository.GetPassengerByCPF(CPF);
         }
         public ActionResult<Passenger> PostPassenger(CreatePassengerDTO passenger)
@@ -64,6 +67,9 @@ namespace OnTheFly.PassengerServices.Services
 
             var date = ParseDate(passenger.DtBirth);
             passengerComplete.DtBirth = date;
+
+            passengerComplete.CPF = passengerComplete.CPF.Replace("-", "");
+            passengerComplete.CPF = passengerComplete.CPF.Replace(".", "");
 
             return _passengerRepository.PostPassenger(passengerComplete);
         }

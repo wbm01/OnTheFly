@@ -72,7 +72,7 @@ namespace OnTheFly.Services
             }
         }
 
-        public async Task<Passenger> CreatePassenger(Passenger passenger)
+        public async Task<Passenger> CreatePassenger(CreatePassengerDTO passenger)
         {
             try
             {
